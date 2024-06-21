@@ -1,5 +1,5 @@
 import { Pacifico_400Regular, useFonts } from '@expo-google-fonts/pacifico';
-import { Link, useLocalSearchParams } from 'expo-router';
+import { Link } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
@@ -35,8 +35,6 @@ const styles = StyleSheet.create({
 const renderItem = (item: { item: Guest }) => <GuestItem guest={item.item} />;
 
 export default function App() {
-  const { firstName, lastName } = useLocalSearchParams();
-  console.log(firstName, lastName);
   const [guests, setGuests] = useState<Guest[]>([]);
   const [fontsLoaded] = useFonts({
     Pacifico_400Regular,
@@ -58,7 +56,7 @@ export default function App() {
     getGuests().catch((error) => {
       console.error(error);
     });
-  }, [firstName, lastName]);
+  }, []);
 
   if (!fontsLoaded) {
     return null;
