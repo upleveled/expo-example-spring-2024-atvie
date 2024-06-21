@@ -1,12 +1,13 @@
-console.log('database guests');
-
 declare global {
   let guestsDatabase: Guest[];
 }
 
+// Declare a global variable to store the guests data for access from any file
+// in the project using globalThis. This maintains the state of the guests array
+// throughout the application runtime.
+// TODO: Add a full PostgreSQL database connection
 if (!globalThis.guestsDatabase) {
   globalThis.guestsDatabase = [];
-  console.log('Initializing guests database');
 }
 
 const guests = globalThis.guestsDatabase;
@@ -14,7 +15,7 @@ const guests = globalThis.guestsDatabase;
 console.log('guests in db', guests);
 
 export type Guest = {
-  id: string;
+  id: number;
   firstName: string;
   lastName: string;
   attending: boolean;
@@ -24,17 +25,17 @@ export function getGuests() {
   return guests;
 }
 
-export function getGuest(id: string) {
-  return guests.find((guest) => guest.id === id);
+export function getGuest(id: number) {
+  return guests.find((guest: Guest) => guest.id === id);
 }
 
 export function addGuest(guest: Guest) {
   guests.push(guest);
-  return guest;
+  return guests;
 }
 
-export function deleteGuest(id: string) {
-  const index = guests.findIndex((guest) => guest.id === id);
+export function deleteGuest(id: number) {
+  const index = guests.findIndex((guest: Guest) => guest.id === id);
   if (index === -1) {
     return;
   }

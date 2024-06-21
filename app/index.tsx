@@ -35,11 +35,7 @@ const styles = StyleSheet.create({
 const renderItem = (item: { item: Guest }) => <GuestItem guest={item.item} />;
 
 export default function App() {
-  const { id, firstName, lastName } = useLocalSearchParams<{
-    id?: Guest['id'];
-    firstName?: Guest['firstName'];
-    lastName?: Guest['lastName'];
-  }>();
+  const { id, firstName, lastName } = useLocalSearchParams();
   console.log(firstName, lastName);
   const [guests, setGuests] = useState<Guest[]>([]);
   const [fontsLoaded] = useFonts({
@@ -60,6 +56,7 @@ export default function App() {
     }
 
     async function postGuest(guest: { firstName: string; lastName: string }) {
+      console.log('POST');
       const response = await fetch(`/guests`, {
         method: 'POST',
         body: JSON.stringify({
@@ -67,9 +64,8 @@ export default function App() {
           lastName: guest.lastName,
         }),
       });
-      const newGuest: Guest = await response.json();
-      console.log('postGuest', newGuest);
-      setGuests((g) => [...g, newGuest]);
+      const allGuests: Guest[] = await response.json();
+      setGuests(allGuests);
     }
 
     if (typeof firstName === 'string' && typeof lastName === 'string') {
@@ -86,7 +82,7 @@ export default function App() {
       await fetch(`/${guestId}`, {
         method: 'DELETE',
       });
-      setGuests((g) => g.filter((guest) => guest.id !== id));
+      setGuests((g) => g.filter((guest) => guest.id !== Number(id)));
     }
     if (typeof id === 'string') {
       deleteGuest(id).catch(console.error);
@@ -103,7 +99,7 @@ export default function App() {
           style={styles.list}
           data={guests}
           renderItem={renderItem}
-          keyExtractor={(item: Guest) => item.id}
+          keyExtractor={(item: Guest) => String(item.id)}
         />
         <Link style={styles.button} href="/add-guest">
           Add Guest

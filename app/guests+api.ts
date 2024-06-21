@@ -1,7 +1,5 @@
 import { addGuest, getGuests, Guest } from '../database/guests';
 
-let id = 1;
-
 export function GET(request: Request): Response {
   const cookie = request.headers.get('cookie');
   console.log('cookie', cookie);
@@ -42,15 +40,13 @@ export async function POST(request: Request): Promise<Response> {
   console.log('last name', body.lastName);
 
   const guest: Guest = {
-    id: String(id++),
+    id: guests.length + 1,
     firstName: body.firstName as string,
     lastName: body.lastName as string,
     attending: false,
   };
 
-  console.log('before push', guests);
+  const allGuests = addGuest(guest);
 
-  const newGuest = addGuest(guest);
-
-  return Response.json(newGuest);
+  return Response.json(allGuests);
 }
