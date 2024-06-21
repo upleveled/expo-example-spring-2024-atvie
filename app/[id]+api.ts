@@ -1,7 +1,12 @@
-import { Guest, guests } from '../database/guests';
+import {
+  deleteGuestById,
+  getGuestById,
+  getGuests,
+  Guest,
+} from '../database/guests';
 
 export function GET(request: Request, { id }: { id: string }) {
-  const guest = guests.find((g) => g.id === id);
+  const guest = getGuestById(id);
   console.log(guest);
   if (!guest) {
     return Response.json(
@@ -13,14 +18,8 @@ export function GET(request: Request, { id }: { id: string }) {
 }
 
 export function DELETE(request: Request, { id }: { id: string }) {
-  const index = guests.findIndex((g) => g.id === id);
-  if (index === -1) {
-    return Response.json(
-      { error: `No guest with id ${id} found` },
-      { status: 404 },
-    );
-  }
-  guests.splice(index, 1);
+  const guests = deleteGuestById(id);
+
   return Response.json(guests);
 }
 
@@ -57,7 +56,7 @@ export async function PUT(request: Request, { id }: { id: string }) {
     );
   }
 
-  const guest = guests.find((currentGuest) => currentGuest.id === id);
+  const guest = getGuestById(id);
 
   if (!guest) {
     return Response.json(

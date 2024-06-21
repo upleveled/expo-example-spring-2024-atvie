@@ -1,10 +1,11 @@
-import { Guest, guests } from '../database/guests';
+import { addGuest, getGuests, Guest } from '../database/guests';
 
 let id = 1;
 
 export function GET(request: Request): Response {
   const cookie = request.headers.get('cookie');
   console.log('cookie', cookie);
+  const guests = getGuests();
   return Response.json(
     { guests: guests },
     {
@@ -17,6 +18,7 @@ export function GET(request: Request): Response {
 
 export async function POST(request: Request): Promise<Response> {
   const body = await request.json();
+  const guests = getGuests();
 
   if (!body.firstName || !body.lastName) {
     return Response.json(
@@ -36,15 +38,19 @@ export async function POST(request: Request): Promise<Response> {
     );
   }
 
+  console.log('first name', body.firstName);
+  console.log('last name', body.lastName);
+
   const guest: Guest = {
     id: String(id++),
     firstName: body.firstName as string,
     lastName: body.lastName as string,
-    ...(body.deadline ? { deadline: body.deadline as string } : {}),
     attending: false,
   };
 
-  guests.push(guest);
+  console.log('before push', guests);
 
-  return Response.json(guest);
+  const newGuest = addGuest(guest);
+
+  return Response.json(newGuest);
 }

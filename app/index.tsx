@@ -54,6 +54,7 @@ export default function App() {
         },
       });
       const data = await response.json();
+      console.log('getGuests', data);
 
       setGuests(data.guests);
     }
@@ -67,6 +68,7 @@ export default function App() {
         }),
       });
       const newGuest: Guest = await response.json();
+      console.log('postGuest', newGuest);
       setGuests((g) => [...g, newGuest]);
     }
 
