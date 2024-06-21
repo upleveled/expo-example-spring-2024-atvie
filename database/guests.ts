@@ -26,7 +26,7 @@ export function getGuests() {
 }
 
 export function getGuest(id: number) {
-  return guests.find((guest: Guest) => guest.id === id);
+  return guests.find((guest: Guest) => Number(guest.id) === Number(id));
 }
 
 export function addGuest(guest: Guest) {
