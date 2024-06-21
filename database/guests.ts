@@ -2,9 +2,8 @@ declare module globalThis {
   let guestsDatabase: Guest[];
 }
 
-// Declare a global variable to store the guests data for access from any file
-// in the project using globalThis. This maintains the state of the guests array
-// throughout the application runtime.
+// Initialize database to empty array only once
+//
 // TODO: Add a full PostgreSQL database connection
 if (!('guestsDatabase' in globalThis)) {
   globalThis.guestsDatabase = [];
@@ -35,7 +34,8 @@ export function addGuest(guest: Guest) {
 }
 
 export function deleteGuest(id: number) {
-  const index = guests.findIndex((guest: Guest) => guest.id === id);
+  const index = guests.findIndex((guest) => guest.id === id);
+
   if (index === -1) {
     return;
   }

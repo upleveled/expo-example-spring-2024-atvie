@@ -1,7 +1,7 @@
 import { deleteGuest, getGuest, Guest } from '../database/guests';
 
-export function GET(request: Request, { id }: { id: number }) {
-  const guest = getGuest(id);
+export function GET(request: Request, { id }: { id: string }) {
+  const guest = getGuest(Number(id));
   console.log(guest);
   if (!guest) {
     return Response.json(
@@ -12,13 +12,16 @@ export function GET(request: Request, { id }: { id: number }) {
   return Response.json(guest);
 }
 
-export function DELETE(request: Request, { id }: { id: number }) {
-  const guests = deleteGuest(id);
+export function DELETE(request: Request, { id }: { id: string }) {
+  console.log('delete guest', id);
+
+  const guests = deleteGuest(Number(id));
 
   return Response.json(guests);
 }
 
-export async function PUT(request: Request, { id }: { id: number }) {
+// TODO: Implement Edit UI
+export async function PUT(request: Request, { id }: { id: string }) {
   const body = await request.json();
   const allowedKeys: Record<keyof Guest, boolean> = {
     id: false,
@@ -51,7 +54,7 @@ export async function PUT(request: Request, { id }: { id: number }) {
     );
   }
 
-  const guest = getGuest(id);
+  const guest = getGuest(Number(id));
 
   if (!guest) {
     return Response.json(

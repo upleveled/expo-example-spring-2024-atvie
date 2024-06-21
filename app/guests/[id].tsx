@@ -1,7 +1,7 @@
 import { Image } from 'expo-image';
-import { Link, useLocalSearchParams } from 'expo-router';
+import { Link, router, useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { colors } from '../../constants/colors';
 import { Guest } from '../../database/guests';
 
@@ -10,6 +10,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.background,
     alignItems: 'center',
+    justifyContent: 'center',
   },
   text: {
     color: colors.text,
@@ -83,9 +84,23 @@ export default function Guests() {
       <Text style={styles.text}>
         {guest.attending ? 'Attending' : 'Not attending'}
       </Text>
-      <Link style={styles.button} href={`/?id=${id}`}>
-        Delete
-      </Link>
+      <Pressable
+        style={({ pressed }) => [
+          {
+            width: '100%',
+            opacity: pressed ? 0.5 : 1,
+          },
+        ]}
+        onPress={async () => {
+          await fetch(`/${id}`, {
+            method: 'DELETE',
+          });
+          router.push('/');
+        }}
+      >
+        <Text style={styles.button}>Delete Guest</Text>
+      </Pressable>
+
       <Link style={styles.button} href="/">
         Back
       </Link>

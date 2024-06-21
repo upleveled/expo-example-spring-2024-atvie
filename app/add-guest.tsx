@@ -1,6 +1,6 @@
-import { Link } from 'expo-router';
+import { Link, router } from 'expo-router';
 import { useState } from 'react';
-import { StyleSheet, TextInput } from 'react-native';
+import { Pressable, StyleSheet, Text, TextInput } from 'react-native';
 import { colors } from '../constants/colors';
 
 const styles = StyleSheet.create({
@@ -30,6 +30,7 @@ const styles = StyleSheet.create({
 export default function NewGuest() {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
+
   return (
     <>
       <TextInput
@@ -44,12 +45,26 @@ export default function NewGuest() {
         placeholder="Last Name"
         value={lastName}
       />
-      <Link
-        href={`/?firstName=${firstName}&lastName=${lastName}`}
-        style={styles.button}
+      <Pressable
+        style={({ pressed }) => [
+          {
+            width: '100%',
+            opacity: pressed ? 0.5 : 1,
+          },
+        ]}
+        onPress={async () => {
+          await fetch(`/guests`, {
+            method: 'POST',
+            body: JSON.stringify({
+              firstName,
+              lastName,
+            }),
+          });
+          router.push('/');
+        }}
       >
-        Add Guest
-      </Link>
+        <Text style={styles.button}>Add Guest</Text>
+      </Pressable>
       <Link href="/" style={styles.button}>
         Back to List
       </Link>
