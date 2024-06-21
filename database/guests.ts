@@ -1,4 +1,4 @@
-declare global {
+declare module globalThis {
   let guestsDatabase: Guest[];
 }
 
@@ -6,7 +6,7 @@ declare global {
 // in the project using globalThis. This maintains the state of the guests array
 // throughout the application runtime.
 // TODO: Add a full PostgreSQL database connection
-if (!globalThis.guestsDatabase) {
+if (!('guestsDatabase' in globalThis)) {
   globalThis.guestsDatabase = [];
 }
 
