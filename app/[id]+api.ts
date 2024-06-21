@@ -1,12 +1,7 @@
-import {
-  deleteGuestById,
-  getGuestById,
-  getGuests,
-  Guest,
-} from '../database/guests';
+import { deleteGuest, getGuest, Guest } from '../database/guests';
 
 export function GET(request: Request, { id }: { id: string }) {
-  const guest = getGuestById(id);
+  const guest = getGuest(id);
   console.log(guest);
   if (!guest) {
     return Response.json(
@@ -18,7 +13,7 @@ export function GET(request: Request, { id }: { id: string }) {
 }
 
 export function DELETE(request: Request, { id }: { id: string }) {
-  const guests = deleteGuestById(id);
+  const guests = deleteGuest(id);
 
   return Response.json(guests);
 }
@@ -56,7 +51,7 @@ export async function PUT(request: Request, { id }: { id: string }) {
     );
   }
 
-  const guest = getGuestById(id);
+  const guest = getGuest(id);
 
   if (!guest) {
     return Response.json(

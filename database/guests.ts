@@ -24,7 +24,7 @@ export function getGuests() {
   return guests;
 }
 
-export function getGuestById(id: string) {
+export function getGuest(id: string) {
   return guests.find((guest) => guest.id === id);
 }
 
@@ -33,7 +33,7 @@ export function addGuest(guest: Guest) {
   return guest;
 }
 
-export function deleteGuestById(id: string) {
+export function deleteGuest(id: string) {
   const index = guests.findIndex((guest) => guest.id === id);
   if (index === -1) {
     return;
