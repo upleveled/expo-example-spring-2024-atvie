@@ -1,23 +1,14 @@
 import { Guest, guests } from '../database/guests';
 
-export const guestList: Guest[] = [
-  {
-    id: '1',
-    firstName: 'John',
-    lastName: 'Doe',
-    attending: true,
-  },
-  {
-    id: '2',
-    firstName: 'Jane',
-    lastName: 'Smith',
-    attending: false,
-  },
-];
-
 export function GET(request: Request, { id }: { id: string }) {
-  const guest = guestList.find((g) => g.id === id);
+  const guest = guests.find((g) => g.id === id);
   console.log(guest);
+  if (!guest) {
+    return Response.json(
+      { error: `No guest with id ${id} found` },
+      { status: 404 },
+    );
+  }
   return Response.json(guest);
 }
 
@@ -33,7 +24,7 @@ export function DELETE(request: Request, { id }: { id: string }) {
   return Response.json(guests);
 }
 
-export async function POST(request: Request, { id }: { id: string }) {
+export async function PUT(request: Request, { id }: { id: string }) {
   const body = await request.json();
   const allowedKeys: Record<keyof Guest, boolean> = {
     id: false,

@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import GuestItem from '../components/GuestItem';
 import { colors } from '../constants/colors';
+import { Guest } from '../database/guests';
 
 const styles = StyleSheet.create({
   container: {
@@ -30,28 +31,6 @@ const styles = StyleSheet.create({
     fontSize: 24,
   },
 });
-
-export const guestList: Guest[] = [
-  {
-    id: '1',
-    firstName: 'John',
-    lastName: 'Doe',
-    attending: true,
-  },
-  {
-    id: '2',
-    firstName: 'Jane',
-    lastName: 'Smith',
-    attending: false,
-  },
-];
-type Guest = {
-  id: string;
-  firstName: string;
-  lastName: string;
-  deadline?: string;
-  attending: boolean;
-};
 
 const renderItem = (item: { item: Guest }) => <GuestItem guest={item.item} />;
 
@@ -120,7 +99,7 @@ export default function App() {
         <StatusBar style="auto" />
         <FlatList
           style={styles.list}
-          data={guestList}
+          data={guests}
           renderItem={renderItem}
           keyExtractor={(item: Guest) => item.id}
         />

@@ -1,6 +1,7 @@
 import { router } from 'expo-router';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { colors } from '../constants/colors';
+import { Guest } from '../database/guests';
 
 const styles = StyleSheet.create({
   right: {
@@ -31,14 +32,6 @@ const styles = StyleSheet.create({
     textAlign: 'left',
   },
 });
-
-type Guest = {
-  id: string;
-  firstName: string;
-  lastName: string;
-  deadline?: string;
-  attending: boolean;
-};
 
 type Props = {
   guest: Guest;
