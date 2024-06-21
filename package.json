@@ -1,0 +1,35 @@
+{
+  "name": "expo-example-spring-2024-atvie",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "main": "expo-router/entry",
+  "scripts": {
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "start": "expo start",
+    "web": "expo start --web"
+  },
+  "dependencies": {
+    "@expo-google-fonts/pacifico": "^0.2.3",
+    "expo": "~51.0.14",
+    "expo-constants": "^16.0.2",
+    "expo-font": "^12.0.7",
+    "expo-image": "^1.12.12",
+    "expo-linking": "^6.3.1",
+    "expo-router": "^3.5.16",
+    "expo-status-bar": "~1.12.1",
+    "react": "18.2.0",
+    "react-native": "0.74.2",
+    "react-native-safe-area-context": "^4.10.5",
+    "react-native-screens": "^3.32.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.20.0",
+    "@types/node": "^20.14.7",
+    "@types/react": "~18.2.45",
+    "eslint-config-upleveled": "^8.3.0",
+    "prettier": "^3.3.2",
+    "typescript": "^5.1.3"
+  }
+}
