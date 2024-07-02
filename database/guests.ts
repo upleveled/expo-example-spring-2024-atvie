@@ -42,7 +42,7 @@ export const getGuest = async (id: number) => {
   return guest;
 };
 
-export const createGuest = async (newGuest: Omit<Guest, 'id'>) => {
+export const addGuest = async (newGuest: Omit<Guest, 'id'>) => {
   const [guest] = await sql<Guest[]>`
       INSERT INTO
         guests (
