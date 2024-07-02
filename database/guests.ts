@@ -1,18 +1,5 @@
 import { sql } from './connect';
 
-declare module globalThis {
-  let guestsDatabase: Guest[];
-}
-
-// Initialize database to empty array only once
-//
-// TODO: Add a full PostgreSQL database connection
-if (!('guestsDatabase' in globalThis)) {
-  globalThis.guestsDatabase = [];
-}
-
-const guests = globalThis.guestsDatabase;
-
 export type Guest = {
   id: number;
   firstName: string;
