@@ -1,11 +1,10 @@
-import postgres from 'postgres';
+import postgres, { Sql } from 'postgres';
 import { postgresConfig, setEnvironmentVariables } from '../util/config';
 
 setEnvironmentVariables();
 
-// Type needed for the connection function below
 declare module globalThis {
-  let postgresSqlClient: ReturnType<typeof postgres> | undefined;
+  let postgresSqlClient: Sql;
 }
 
 // Connect only once to the database
