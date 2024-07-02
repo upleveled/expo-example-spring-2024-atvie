@@ -1,37 +1,21 @@
-import postgres, { Sql } from 'postgres';
-import { setEnvironmentVariables } from '../util/config';
+import postgres from 'postgres';
+import { postgresConfig, setEnvironmentVariables } from '../util/config';
 
 setEnvironmentVariables();
 
+// Type needed for the connection function below
 declare module globalThis {
-  let postgresSqlClient: Sql;
+  let postgresSqlClient: ReturnType<typeof postgres> | undefined;
 }
 
 // Connect only once to the database
-// https://github.com/vercel/next.js/discussions/26427#discussioncomment-898067
+// https://github.com/vercel/next.js/issues/7811#issuecomment-715259370
 function connectOneTimeToDatabase() {
-  if (!('postgresSqlClient' in globalThis)) {
-    globalThis.postgresSqlClient = postgres({
-      transform: {
-        ...postgres.camel,
-        undefined: null,
-      },
-    });
+  if (!globalThis.postgresSqlClient) {
+    globalThis.postgresSqlClient = postgres(postgresConfig);
   }
-
-  // Use Next.js Dynamic Rendering in all database queries:
-  //
-  // Wrap sql`` tagged template function to call `noStore()` from
-  // next/cache before each database query. `noStore()` is a
-  // Next.js Dynamic Function, which causes the page to use
-  // Dynamic Rendering
-  //
-  // https://nextjs.org/docs/app/building-your-application/rendering/static-and-dynamic-rendering
-  return ((
-    ...sqlParameters: Parameters<typeof globalThis.postgresSqlClient>
-  ) => {
-    return globalThis.postgresSqlClient(...sqlParameters);
-  }) as typeof globalThis.postgresSqlClient;
+  return globalThis.postgresSqlClient;
 }
 
+// Connect to PostgreSQL
 export const sql = connectOneTimeToDatabase();

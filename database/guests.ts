@@ -49,11 +49,11 @@ export const addGuest = async (newGuest: Omit<Guest, 'id'>) => {
   return guest;
 };
 
-export const deleteGuest = async (deleteGuest: Pick<Guest, 'id'>) => {
+export const deleteGuest = async (removeGuest: Pick<Guest, 'id'>) => {
   const [guest] = await sql<Guest[]>`
       DELETE FROM guests
       WHERE
-        id = ${deleteGuest.id}
+        id = ${removeGuest.id}
       RETURNING
         guests.*
     `;

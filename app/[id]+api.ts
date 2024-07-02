@@ -63,7 +63,7 @@ export async function PUT(
     );
   }
 
-  const guest = getGuest(Number(id));
+  const guest = await getGuest(Number(id));
 
   if (!guest) {
     return Response.json(
@@ -79,10 +79,6 @@ export async function PUT(
       },
     );
   }
-
-  if (body.firstName) guest.firstName = body.firstName as string;
-  if (body.lastName) guest.lastName = body.lastName as string;
-  if ('attending' in body) guest.attending = body.attending as boolean;
 
   return Response.json(guest);
 }
