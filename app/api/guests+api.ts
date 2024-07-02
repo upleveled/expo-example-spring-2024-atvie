@@ -1,4 +1,4 @@
-import { addGuest, getGuests } from '../database/guests';
+import { addGuest, getGuests } from '../../database/guests';
 
 export async function GET(request: Request): Promise<Response> {
   const cookie = request.headers.get('cookie');

@@ -44,7 +44,7 @@ export default function Guests() {
         if (typeof id !== 'string') {
           return;
         }
-        const response = await fetch(`/${id}`);
+        const response = await fetch(`/api/${id}`);
         const fetchedGuest = await response.json();
         setGuest(fetchedGuest);
       } catch (error) {
@@ -91,7 +91,7 @@ export default function Guests() {
           },
         ]}
         onPress={async () => {
-          await fetch(`/${id}`, {
+          await fetch(`/api/${id}`, {
             method: 'DELETE',
           });
           router.push('/');

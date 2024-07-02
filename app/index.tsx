@@ -42,7 +42,7 @@ export default function App() {
 
   useEffect(() => {
     async function getGuests() {
-      const response = await fetch('/guests', {
+      const response = await fetch('/api/guests', {
         headers: {
           Cookie: 'name=value',
         },

@@ -1,4 +1,4 @@
-import { deleteGuest, getGuest, Guest } from '../database/guests';
+import { deleteGuest, getGuest, Guest } from '../../database/guests';
 
 export async function GET(
   request: Request,
