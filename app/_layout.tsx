@@ -1,4 +1,4 @@
-import { Pacifico_400Regular, useFonts } from '@expo-google-fonts/pacifico';
+import { Roboto_400Regular, useFonts } from '@expo-google-fonts/roboto';
 import { Slot, usePathname } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View } from 'react-native';
@@ -33,7 +33,7 @@ export default function HomeLayout() {
   const pathname = usePathname();
   const label = routeMapping(pathname);
   const [fontsLoaded] = useFonts({
-    Pacifico_400Regular,
+    Roboto_400Regular,
   });
 
   if (!fontsLoaded) {

@@ -8,7 +8,7 @@ importers:
 
   .:
     dependencies:
-      '@expo-google-fonts/pacifico':
+      '@expo-google-fonts/roboto':
         specifier: ^0.2.3
         version: 0.2.3
       expo:
@@ -865,8 +865,8 @@ packages:
     resolution: {integrity: sha512-BsWiH1yFGjXXS2yvrf5LyuoSIIbPrGUWob917o+BTKuZ7qJdxX8aJLRxs1fS9n6r7vESrq1OUqb68dANcFXuQQ==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
-  '@expo-google-fonts/pacifico@0.2.3':
-    resolution: {integrity: sha512-H438XMx00IbWT6rY5RnB5QeVc6y8MvPFEhx2+A1eNQ2OP7f7SIgl6z4C2pocpX54p0SnKUexSUFwftOsEHoJUg==}
+  '@expo-google-fonts/roboto@0.2.3':
+    resolution: {integrity: sha512-PF6S//ZYWeXfpYTwvY2oEe0d5RnqwR5KMsGjuTgg6y9p/CPK/IkWL+wsbkzjfd+Jck1Q1pRlWOoe5uz42sQFRg==}
 
   '@expo/bunyan@4.0.0':
     resolution: {integrity: sha512-Ydf4LidRB/EBI+YrB+cVLqIseiRfjUI/AeHBgjGMtq3GroraDu81OV7zqophRgupngoL3iS3JUMDMnxO7g39qA==}
@@ -5940,7 +5940,7 @@ snapshots:
 
   '@eslint/object-schema@2.1.4': {}
 
-  '@expo-google-fonts/pacifico@0.2.3': {}
+  '@expo-google-fonts/roboto@0.2.3': {}
 
   '@expo/bunyan@4.0.0':
     dependencies:

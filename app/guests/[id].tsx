@@ -28,6 +28,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     backgroundColor: colors.cardBackground,
     fontSize: 24,
+    color: colors.text,
   },
 });
 

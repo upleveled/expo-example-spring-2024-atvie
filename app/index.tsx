@@ -1,4 +1,4 @@
-import { Pacifico_400Regular, useFonts } from '@expo-google-fonts/pacifico';
+import { Roboto_400Regular, useFonts } from '@expo-google-fonts/roboto';
 import { Link } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
@@ -29,6 +29,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     backgroundColor: colors.cardBackground,
     fontSize: 24,
+    color: colors.text,
   },
 });
 
@@ -37,7 +38,7 @@ const renderItem = (item: { item: Guest }) => <GuestItem guest={item.item} />;
 export default function App() {
   const [guests, setGuests] = useState<Guest[]>([]);
   const [fontsLoaded] = useFonts({
-    Pacifico_400Regular,
+    Roboto_400Regular,
   });
 
   useEffect(() => {

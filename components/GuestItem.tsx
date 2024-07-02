@@ -7,9 +7,11 @@ const styles = StyleSheet.create({
   right: {
     textAlign: 'right',
     fontSize: 10,
+    color: colors.text,
   },
   center: {
     textAlign: 'center',
+    color: colors.text,
   },
   card: {
     backgroundColor: colors.cardBackground,

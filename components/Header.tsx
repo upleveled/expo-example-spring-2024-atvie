@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
     color: colors.text,
     fontSize: 32,
     textAlign: 'center',
-    fontFamily: 'Pacifico_400Regular',
+    fontFamily: 'Roboto_400Regular',
   },
   logo: {
     width: 50,
