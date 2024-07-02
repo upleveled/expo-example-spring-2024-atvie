@@ -5,6 +5,11 @@ jobs:
   check-types:
     name: Lint, Check Types
     runs-on: ubuntu-latest
+    env:
+      PGHOST: localhost
+      PGDATABASE: expo_example_spring_2024
+      PGUSERNAME: expo_example_spring_2024
+      PGPASSWORD: expo_example_spring_2024
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v2
