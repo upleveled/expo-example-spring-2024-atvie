@@ -1,8 +1,11 @@
 import { deleteGuest, getGuest, Guest } from '../database/guests';
 
-export function GET(request: Request, { id }: { id: string }) {
-  const guest = getGuest(Number(id));
-  console.log(guest);
+export async function GET(
+  request: Request,
+  { id }: { id: string },
+): Promise<Response> {
+  const guest = await getGuest(Number(id));
+
   if (!guest) {
     return Response.json(
       { error: `No guest with id ${id} found` },
@@ -12,16 +15,22 @@ export function GET(request: Request, { id }: { id: string }) {
   return Response.json(guest);
 }
 
-export function DELETE(request: Request, { id }: { id: string }) {
-  console.log('delete guest', id);
-
-  const guests = deleteGuest(Number(id));
+export async function DELETE(
+  request: Request,
+  { id }: { id: string },
+): Promise<Response> {
+  const guests = await deleteGuest({
+    id: Number(id),
+  });
 
   return Response.json(guests);
 }
 
 // TODO: Implement Edit UI
-export async function PUT(request: Request, { id }: { id: string }) {
+export async function PUT(
+  request: Request,
+  { id }: { id: string },
+): Promise<Response> {
   const body = await request.json();
   const allowedKeys: Record<keyof Guest, boolean> = {
     id: false,

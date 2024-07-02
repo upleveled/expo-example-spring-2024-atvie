@@ -48,7 +48,6 @@ export default function App() {
         },
       });
       const data = await response.json();
-      console.log('getGuests', data);
 
       setGuests(data.guests);
     }

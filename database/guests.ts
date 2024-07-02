@@ -1,3 +1,5 @@
+import { sql } from './connect';
+
 declare module globalThis {
   let guestsDatabase: Guest[];
 }
@@ -11,8 +13,6 @@ if (!('guestsDatabase' in globalThis)) {
 
 const guests = globalThis.guestsDatabase;
 
-console.log('guests in db', guests);
-
 export type Guest = {
   id: number;
   firstName: string;
@@ -20,25 +20,55 @@ export type Guest = {
   attending: boolean;
 };
 
-export function getGuests() {
+export const getGuests = async () => {
+  const guests = await sql<Guest[]>`
+    SELECT
+      *
+    FROM
+      guests
+  `;
   return guests;
-}
+};
 
-export function getGuest(id: number) {
-  return guests.find((guest: Guest) => Number(guest.id) === Number(id));
-}
+export const getGuest = async (id: number) => {
+  const [guest] = await sql<Guest[]>`
+    SELECT
+      *
+    FROM
+      guests
+    WHERE
+      id = ${id}
+  `;
+  return guest;
+};
 
-export function addGuest(guest: Guest) {
-  guests.push(guest);
-  return guests;
-}
+export const createGuest = async (newGuest: Omit<Guest, 'id'>) => {
+  const [guest] = await sql<Guest[]>`
+      INSERT INTO
+        guests (
+          first_name,
+          last_name,
+          attending
+        )
+      VALUES
+        (
+          ${newGuest.firstName},
+          ${newGuest.lastName},
+          ${newGuest.attending}
+        )
+      RETURNING
+        guests.*
+    `;
+  return guest;
+};
 
-export function deleteGuest(id: number) {
-  const index = guests.findIndex((guest) => guest.id === id);
-
-  if (index === -1) {
-    return;
-  }
-  guests.splice(index, 1);
-  return guests;
-}
+export const deleteGuest = async (deleteGuest: Pick<Guest, 'id'>) => {
+  const [guest] = await sql<Guest[]>`
+      DELETE FROM guests
+      WHERE
+        id = ${deleteGuest.id}
+      RETURNING
+        guests.*
+    `;
+  return guest;
+};
