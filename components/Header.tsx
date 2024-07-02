@@ -1,5 +1,4 @@
 import Constants from 'expo-constants';
-import { Image } from 'expo-image';
 import { Platform, SafeAreaView, StyleSheet, Text, View } from 'react-native';
 import { colors } from '../constants/colors';
 
@@ -35,11 +34,6 @@ export default function Header(props: Props) {
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
-        <Image
-          style={styles.logo}
-          source={require('../assets/logo.webp')}
-          alt="logo"
-        />
         <Text style={styles.label}>{props.label}</Text>
       </View>
     </SafeAreaView>
