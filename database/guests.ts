@@ -1,11 +1,5 @@
+import { Guest } from '../migrations/00000-createTableGuests';
 import { sql } from './connect';
-
-export type Guest = {
-  id: number;
-  firstName: string;
-  lastName: string;
-  attending: boolean;
-};
 
 export const getGuests = async () => {
   const guests = await sql<Guest[]>`

@@ -1,5 +1,12 @@
 import { Sql } from 'postgres';
 
+export type Guest = {
+  id: number;
+  firstName: string;
+  lastName: string;
+  attending: boolean;
+};
+
 export async function up(sql: Sql) {
   await sql`
     CREATE TABLE guests (
