@@ -1,4 +1,5 @@
-import { deleteGuest, getGuest, Guest } from '../database/guests';
+import { deleteGuest, getGuest } from '../database/guests';
+import { Guest } from '../migrations/00000-createTableGuests';
 
 export async function GET(
   request: Request,

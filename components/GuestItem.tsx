@@ -1,7 +1,7 @@
 import { router } from 'expo-router';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { colors } from '../constants/colors';
-import { Guest } from '../database/guests';
+import { Guest } from '../migrations/00000-createTableGuests';
 
 const styles = StyleSheet.create({
   right: {
