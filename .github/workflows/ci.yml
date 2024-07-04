@@ -5,6 +5,8 @@ jobs:
   check-types:
     name: Lint, Check Types
     runs-on: ubuntu-latest
+    timeout-minutes: 30
+    # TODO: Update environment variables with your own database credentials
     env:
       PGHOST: localhost
       PGDATABASE: expo_example_spring_2024
