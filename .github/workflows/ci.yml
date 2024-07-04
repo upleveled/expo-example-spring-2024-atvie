@@ -1,9 +1,9 @@
-name: Lint, Check Types
+name: CI
 on: push
 
 jobs:
-  check-types:
-    name: Lint, Check Types
+  ci:
+    name: Type Checking, Linting
     runs-on: ubuntu-latest
     timeout-minutes: 30
     # TODO: Update environment variables with your own database credentials
