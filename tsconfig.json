@@ -2,10 +2,11 @@
   "$schema": "https://json.schemastore.org/tsconfig",
   "extends": "eslint-config-upleveled/tsconfig.base.json",
   "compilerOptions": {
-    // Based on expo/tsconfig.base.json
-    // https://github.com/expo/expo/blob/main/packages/expo/tsconfig.base.json
-    "jsx": "react-native",
-    "target": "ESNext"
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
   },
   "include": [
     "**/*.ts",
@@ -13,7 +14,7 @@
     "**/*.js",
     "**/*.jsx",
     "**/*.cjs",
-    "**/*.mjs"
-  ],
-  "exclude": ["node_modules"]
+    "**/*.mjs",
+    ".next/types/**/*.ts"
+  ]
 }
