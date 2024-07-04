@@ -3,7 +3,7 @@ import { Link, router, useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { colors } from '../../constants/colors';
-import { Guest } from '../../database/guests';
+import { Guest } from '../../migrations/00000-createTableGuests';
 
 const styles = StyleSheet.create({
   container: {

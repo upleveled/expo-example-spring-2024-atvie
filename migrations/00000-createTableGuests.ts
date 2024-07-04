@@ -1,9 +1,10 @@
 import { Sql } from 'postgres';
 
-export type User = {
+export type Guest = {
   id: number;
-  name: string;
-  passwordHash: string;
+  firstName: string;
+  lastName: string;
+  attending: boolean;
 };
 
 export async function up(sql: Sql) {
