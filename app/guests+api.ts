@@ -1,9 +1,9 @@
-import { addGuest, getGuests } from '../database/guests';
+import { addGuestInsecure, getGuestsInsecure } from '../database/guests';
 
 export async function GET(request: Request): Promise<Response> {
   const cookie = request.headers.get('cookie');
   console.log('cookie', cookie);
-  const guests = await getGuests();
+  const guests = await getGuestsInsecure();
 
   return Response.json(
     { guests: guests },
@@ -42,7 +42,7 @@ export async function POST(request: Request): Promise<Response> {
     attending: false,
   };
 
-  const guest = await addGuest(newGuest);
+  const guest = await addGuestInsecure(newGuest);
 
   return Response.json(guest);
 }

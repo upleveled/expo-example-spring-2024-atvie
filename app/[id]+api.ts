@@ -1,11 +1,11 @@
-import { deleteGuest, getGuest } from '../database/guests';
+import { deleteGuestInsecure, getGuestInsecure } from '../database/guests';
 import { Guest } from '../migrations/00000-createTableGuests';
 
 export async function GET(
   request: Request,
   { id }: { id: string },
 ): Promise<Response> {
-  const guest = await getGuest(Number(id));
+  const guest = await getGuestInsecure(Number(id));
 
   if (!guest) {
     return Response.json(
@@ -20,7 +20,7 @@ export async function DELETE(
   request: Request,
   { id }: { id: string },
 ): Promise<Response> {
-  const guests = await deleteGuest({
+  const guests = await deleteGuestInsecure({
     id: Number(id),
   });
 
@@ -64,7 +64,7 @@ export async function PUT(
     );
   }
 
-  const guest = await getGuest(Number(id));
+  const guest = await getGuestInsecure(Number(id));
 
   if (!guest) {
     return Response.json(
