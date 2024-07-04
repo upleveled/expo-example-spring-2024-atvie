@@ -3,13 +3,13 @@ import { Guest } from '../../migrations/00000-createTableGuests';
 
 export async function GET(
   request: Request,
-  { id }: { id: string },
+  { guestId }: { guestId: string },
 ): Promise<Response> {
-  const guest = await getGuest(Number(id));
+  const guest = await getGuest(Number(guestId));
 
   if (!guest) {
     return Response.json(
-      { error: `No guest with id ${id} found` },
+      { error: `No guest with id ${guestId} found` },
       { status: 404 },
     );
   }
@@ -18,10 +18,10 @@ export async function GET(
 
 export async function DELETE(
   request: Request,
-  { id }: { id: string },
+  { guestId }: { guestId: string },
 ): Promise<Response> {
   const guests = await deleteGuest({
-    id: Number(id),
+    id: Number(guestId),
   });
 
   return Response.json(guests);
@@ -30,7 +30,7 @@ export async function DELETE(
 // TODO: Implement Edit UI
 export async function PUT(
   request: Request,
-  { id }: { id: string },
+  { guestId }: { guestId: string },
 ): Promise<Response> {
   const body = await request.json();
   const allowedKeys: Record<keyof Guest, boolean> = {
@@ -64,14 +64,14 @@ export async function PUT(
     );
   }
 
-  const guest = await getGuest(Number(id));
+  const guest = await getGuest(Number(guestId));
 
   if (!guest) {
     return Response.json(
       {
         errors: [
           {
-            message: `Guest ${id} not found`,
+            message: `Guest ${guestId} not found`,
           },
         ],
       },
