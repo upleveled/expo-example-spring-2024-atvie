@@ -44,6 +44,9 @@ declare namespace __MetroModuleApi {
  * Declare process variable
  */
 declare namespace NodeJS {
-  interface Require extends __MetroModuleApi.RequireFunction {}
+  // Add a custom property to avoid the empty interface issue @typescript-eslint/no-empty-object-type
+  interface Require extends __MetroModuleApi.RequireFunction {
+    customProperty?: string;
+  }
 }
 declare const process: NodeJS.Process;
