@@ -30,7 +30,11 @@ jobs:
         with:
           node-version: 'lts/*'
           cache: 'pnpm'
-      - run: pnpm install
-      - run: pnpm migrate up
-      - run: pnpm eslint . --max-warnings 0
-      - run: pnpm tsc
+      - name: Install dependencies
+        run: pnpm install
+      - name: Run database migrations
+        run: pnpm migrate up
+      - name: Check TypeScript Types
+        run: pnpm tsc
+      - name: Lint with ESLint
+        run: pnpm eslint . --max-warnings 0
