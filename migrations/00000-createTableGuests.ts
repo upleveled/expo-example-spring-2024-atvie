@@ -10,7 +10,7 @@ export type Guest = {
 export async function up(sql: Sql) {
   await sql`
     CREATE TABLE guests (
-      id integer PRIMARY key generated always AS identity,
+      id integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
       first_name varchar(30) NOT NULL,
       last_name varchar(30) NOT NULL,
       attending boolean NOT NULL
