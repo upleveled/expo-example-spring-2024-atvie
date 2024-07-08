@@ -1,4 +1,5 @@
 import { addGuestInsecure, getGuestsInsecure } from '../database/guests';
+import { guestsSchema } from '../migrations/00000-createTableGuests';
 
 export async function GET(request: Request): Promise<Response> {
   const cookie = request.headers.get('cookie');
@@ -16,20 +17,18 @@ export async function GET(request: Request): Promise<Response> {
 }
 
 export async function POST(request: Request): Promise<Response> {
-  const body = await request.json();
+  const requestBody = await request.json();
 
-  if (!body.firstName || !body.lastName) {
+  const result = guestsSchema.safeParse(requestBody);
+
+  console.log(result);
+
+  if (!result.success) {
     return Response.json(
-      'Request body missing a firstName or lastName property',
       {
-        status: 400,
+        error: 'Request does not contain guest object',
+        errorIssues: result.error.issues,
       },
-    );
-  }
-
-  if (Object.keys(body).length > 3) {
-    return Response.json(
-      'Request body contains more than firstName, lastName and deadline properties',
       {
         status: 400,
       },
@@ -37,12 +36,21 @@ export async function POST(request: Request): Promise<Response> {
   }
 
   const newGuest = {
-    firstName: body.firstName,
-    lastName: body.lastName,
+    firstName: result.data.firstName,
+    lastName: result.data.lastName,
     attending: false,
   };
 
   const guest = await addGuestInsecure(newGuest);
+
+  if (!guest) {
+    return Response.json(
+      { error: 'Guest not created' },
+      {
+        status: 500,
+      },
+    );
+  }
 
   return Response.json({ guest: guest });
 }

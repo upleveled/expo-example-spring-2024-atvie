@@ -1,4 +1,5 @@
 import { Sql } from 'postgres';
+import { z } from 'zod';
 
 export type Guest = {
   id: number;
@@ -6,6 +7,11 @@ export type Guest = {
   lastName: string;
   attending: boolean;
 };
+
+export const guestsSchema = z.object({
+  firstName: z.string().min(1).max(30),
+  lastName: z.string().min(1).max(30),
+});
 
 export async function up(sql: Sql) {
   await sql`

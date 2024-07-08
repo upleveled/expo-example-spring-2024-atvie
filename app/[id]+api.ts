@@ -1,5 +1,5 @@
 import { deleteGuestInsecure, getGuestInsecure } from '../database/guests';
-import { Guest } from '../migrations/00000-createTableGuests';
+import { guestsSchema } from '../migrations/00000-createTableGuests';
 
 export async function GET(
   request: Request,
@@ -30,31 +30,15 @@ export async function PUT(
   request: Request,
   { id }: { id: string },
 ): Promise<Response> {
-  const body = await request.json();
-  const allowedKeys: Record<keyof Guest, boolean> = {
-    id: false,
-    firstName: true,
-    lastName: true,
-    attending: true,
-  };
-  const difference = Object.keys(body).filter(
-    (key) => !allowedKeys[key as keyof Guest],
-  );
+  const requestBody = await request.json();
 
-  if (difference.length > 0) {
+  const result = guestsSchema.safeParse(requestBody);
+
+  if (!result.success) {
     return Response.json(
       {
-        errors: [
-          {
-            message: `Request body contains more than allowed properties (${Object.keys(
-              allowedKeys,
-            ).join(
-              ', ',
-            )}). The request also contains these extra keys that are not allowed: ${difference.join(
-              ', ',
-            )}`,
-          },
-        ],
+        error: 'Request does not contain guest object',
+        errorIssues: result.error.issues,
       },
       {
         status: 400,
