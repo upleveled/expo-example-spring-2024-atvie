@@ -13,18 +13,16 @@ export async function GET(
       { status: 404 },
     );
   }
-  return Response.json(guest);
+  return Response.json({ guest: guest });
 }
 
 export async function DELETE(
   request: Request,
   { id }: { id: string },
 ): Promise<Response> {
-  const guests = await deleteGuestInsecure({
-    id: Number(id),
-  });
+  const guests = await deleteGuestInsecure(Number(id));
 
-  return Response.json(guests);
+  return Response.json({ guests: guests });
 }
 
 // TODO: Implement Edit UI
@@ -81,5 +79,5 @@ export async function PUT(
     );
   }
 
-  return Response.json(guest);
+  return Response.json({ guest: guest });
 }

@@ -44,5 +44,5 @@ export async function POST(request: Request): Promise<Response> {
 
   const guest = await addGuestInsecure(newGuest);
 
-  return Response.json(guest);
+  return Response.json({ guest: guest });
 }

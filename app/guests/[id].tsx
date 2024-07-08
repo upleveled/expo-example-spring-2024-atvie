@@ -46,7 +46,7 @@ export default function Guests() {
         }
         const response = await fetch(`/${id}`);
         const fetchedGuest = await response.json();
-        setGuest(fetchedGuest);
+        setGuest(fetchedGuest.guest);
       } catch (error) {
         console.error('Error fetching guest', error);
       }
