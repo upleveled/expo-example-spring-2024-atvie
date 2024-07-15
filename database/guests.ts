@@ -1,7 +1,7 @@
 import { Guest } from '../migrations/00000-createTableGuests';
 import { sql } from './connect';
 
-export const getGuests = async () => {
+export const getGuestsInsecure = async () => {
   const guests = await sql<Guest[]>`
     SELECT
       *
@@ -11,7 +11,7 @@ export const getGuests = async () => {
   return guests;
 };
 
-export const getGuest = async (id: number) => {
+export const getGuestInsecure = async (id: number) => {
   const [guest] = await sql<Guest[]>`
     SELECT
       *
@@ -23,33 +23,33 @@ export const getGuest = async (id: number) => {
   return guest;
 };
 
-export const addGuest = async (newGuest: Omit<Guest, 'id'>) => {
+export const addGuestInsecure = async (newGuest: Omit<Guest, 'id'>) => {
   const [guest] = await sql<Guest[]>`
-      INSERT INTO
-        guests (
-          first_name,
-          last_name,
-          attending
-        )
-      VALUES
-        (
-          ${newGuest.firstName},
-          ${newGuest.lastName},
-          ${newGuest.attending}
-        )
-      RETURNING
-        guests.*
-    `;
+    INSERT INTO
+      guests (
+        first_name,
+        last_name,
+        attending
+      )
+    VALUES
+      (
+        ${newGuest.firstName},
+        ${newGuest.lastName},
+        ${newGuest.attending}
+      )
+    RETURNING
+      guests.*
+  `;
   return guest;
 };
 
-export const deleteGuest = async (removeGuest: Pick<Guest, 'id'>) => {
+export const deleteGuestInsecure = async (id: number) => {
   const [guest] = await sql<Guest[]>`
-      DELETE FROM guests
-      WHERE
-        id = ${removeGuest.id}
-      RETURNING
-        guests.*
-    `;
+    DELETE FROM guests
+    WHERE
+      id = ${id}
+    RETURNING
+      guests.*
+  `;
   return guest;
 };
