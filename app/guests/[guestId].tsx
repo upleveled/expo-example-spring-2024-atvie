@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
 });
 
 export default function Guests() {
-  const { id } = useLocalSearchParams();
+  const { guestId } = useLocalSearchParams();
 
   const [guest, setGuest] = useState<Guest>();
 
@@ -41,10 +41,10 @@ export default function Guests() {
   useEffect(() => {
     async function loadGuest() {
       try {
-        if (typeof id !== 'string') {
+        if (typeof guestId !== 'string') {
           return;
         }
-        const response = await fetch(`/${id}`);
+        const response = await fetch(`/api/${guestId}`);
         const fetchedGuest = await response.json();
         setGuest(fetchedGuest.guest);
       } catch (error) {
@@ -52,13 +52,13 @@ export default function Guests() {
       }
     }
     loadGuest().catch(console.error);
-  }, [id]);
+  }, [guestId]);
 
   if (!guest) {
     return null;
   }
 
-  if (typeof id !== 'string') {
+  if (typeof guestId !== 'string') {
     return null;
   }
 
@@ -66,13 +66,13 @@ export default function Guests() {
     <View style={styles.container}>
       <Image
         style={styles.profilePicture}
-        source={imageContext(`./guest-${id}.avif`)}
+        source={imageContext(`./guest-${guestId}.avif`)}
         alt="profile picture"
       />
       <Image
         style={styles.profilePicture}
         source={{
-          uri: `https://res.cloudinary.com/trueque-image/image/upload/v1713269496/guest-${id}.webp`,
+          uri: `https://res.cloudinary.com/trueque-image/image/upload/v1713269496/guest-${guestId}.webp`,
         }}
         alt="profile picture"
       />
@@ -91,7 +91,7 @@ export default function Guests() {
           },
         ]}
         onPress={async () => {
-          await fetch(`/${id}`, {
+          await fetch(`/api/${guestId}`, {
             method: 'DELETE',
           });
           router.push('/');
