@@ -1,9 +1,16 @@
+import AntDesign from '@expo/vector-icons/AntDesign';
 import { Image } from 'expo-image';
 import { Link, router, useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import {
+  Pressable,
+  StyleSheet,
+  Switch,
+  Text,
+  TextInput,
+  View,
+} from 'react-native';
 import { colors } from '../../constants/colors';
-import { Guest } from '../../migrations/00000-createTableGuests';
 
 const styles = StyleSheet.create({
   container: {
@@ -20,6 +27,12 @@ const styles = StyleSheet.create({
     width: 200,
     height: 200,
   },
+  input: {
+    marginTop: 30,
+    paddingLeft: 30,
+    paddingRight: 30,
+    width: '100%',
+  },
   button: {
     marginTop: 30,
     paddingTop: 10,
@@ -29,12 +42,24 @@ const styles = StyleSheet.create({
     backgroundColor: colors.cardBackground,
     fontSize: 24,
   },
+  edit: {
+    textAlign: 'right',
+  },
+  flex: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    width: '100%',
+  },
 });
 
 export default function Guests() {
   const { id } = useLocalSearchParams();
 
-  const [guest, setGuest] = useState<Guest>();
+  const [edit, setEdit] = useState<boolean>(false);
+  const [firstName, setFirstName] = useState<string>('');
+  const [lastName, setLastName] = useState<string>('');
+  const [attending, setAttending] = useState<boolean>(false);
 
   const imageContext = require.context('../../assets', false, /\.(avif)$/);
 
@@ -46,7 +71,9 @@ export default function Guests() {
         }
         const response = await fetch(`/${id}`);
         const fetchedGuest = await response.json();
-        setGuest(fetchedGuest.guest);
+        setFirstName(fetchedGuest.guest.firstName);
+        setLastName(fetchedGuest.guest.lastName);
+        setAttending(fetchedGuest.guest.attending);
       } catch (error) {
         console.error('Error fetching guest', error);
       }
@@ -54,7 +81,7 @@ export default function Guests() {
     loadGuest().catch(console.error);
   }, [id]);
 
-  if (!guest) {
+  if (!firstName || !lastName) {
     return null;
   }
 
@@ -76,29 +103,95 @@ export default function Guests() {
         }}
         alt="profile picture"
       />
-
-      <Text style={styles.text}>
-        {guest.firstName} {guest.lastName}
-      </Text>
-      <Text style={styles.text}>
-        {guest.attending ? 'Attending' : 'Not attending'}
-      </Text>
-      <Pressable
-        style={({ pressed }) => [
-          {
-            width: '100%',
-            opacity: pressed ? 0.5 : 1,
-          },
-        ]}
-        onPress={async () => {
-          await fetch(`/${id}`, {
-            method: 'DELETE',
-          });
-          router.push('/');
-        }}
-      >
-        <Text style={styles.button}>Delete Guest</Text>
-      </Pressable>
+      {edit ? (
+        <>
+          <TextInput
+            style={styles.input}
+            onChangeText={setFirstName}
+            placeholder="First Name"
+            value={firstName}
+          />
+          <TextInput
+            style={styles.input}
+            onChangeText={setLastName}
+            placeholder="First Name"
+            value={lastName}
+          />
+          <View style={styles.flex}>
+            <Text>Attending?</Text>
+            <Switch
+              trackColor={{ false: '#767577', true: '#81b0ff' }}
+              onValueChange={setAttending}
+              value={attending}
+            />
+          </View>
+          <Pressable
+            style={({ pressed }) => [
+              {
+                width: '100%',
+                opacity: pressed ? 0.5 : 1,
+              },
+            ]}
+            onPress={async () => {
+              await fetch(`/${id}`, {
+                method: 'PUT',
+                body: JSON.stringify({
+                  firstName,
+                  lastName,
+                  attending,
+                }),
+              });
+              setEdit(false);
+              router.push({
+                pathname: `/guests/[id]`,
+                params: { id },
+              });
+            }}
+          >
+            <Text style={styles.button}>Update Guest</Text>
+          </Pressable>
+        </>
+      ) : (
+        <>
+          <Text style={styles.text}>
+            {firstName} {lastName}
+          </Text>
+          <Text style={styles.text}>
+            {attending ? 'Attending' : 'Not attending'}
+          </Text>
+          <Pressable
+            style={({ pressed }) => [
+              {
+                width: '100%',
+                opacity: pressed ? 0.5 : 1,
+              },
+            ]}
+            onPress={() => {
+              setEdit(!edit);
+            }}
+          >
+            <Text style={styles.edit}>
+              <AntDesign name="edit" size={32} color="black" />
+            </Text>
+          </Pressable>
+          <Pressable
+            style={({ pressed }) => [
+              {
+                width: '100%',
+                opacity: pressed ? 0.5 : 1,
+              },
+            ]}
+            onPress={async () => {
+              await fetch(`/${id}`, {
+                method: 'DELETE',
+              });
+              router.push('/');
+            }}
+          >
+            <Text style={styles.button}>Delete Guest</Text>
+          </Pressable>
+        </>
+      )}
 
       <Link style={styles.button} href="/">
         Back

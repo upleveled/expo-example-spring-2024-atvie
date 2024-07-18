@@ -19,9 +19,13 @@ export async function GET(request: Request): Promise<Response> {
 export async function POST(request: Request): Promise<Response> {
   const requestBody = await request.json();
 
-  const result = guestsSchema.safeParse(requestBody);
+  const newGuest = {
+    firstName: requestBody.firstName,
+    lastName: requestBody.lastName,
+    attending: false,
+  };
 
-  console.log(result);
+  const result = guestsSchema.safeParse(newGuest);
 
   if (!result.success) {
     return Response.json(
@@ -34,12 +38,6 @@ export async function POST(request: Request): Promise<Response> {
       },
     );
   }
-
-  const newGuest = {
-    firstName: result.data.firstName,
-    lastName: result.data.lastName,
-    attending: false,
-  };
 
   const guest = await addGuestInsecure(newGuest);
 
