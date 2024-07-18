@@ -53,3 +53,18 @@ export const deleteGuestInsecure = async (id: number) => {
   `;
   return guest;
 };
+
+export const updateGuestInsecure = async (updatedGuest: Guest) => {
+  const [guest] = await sql<Guest[]>`
+    UPDATE guests
+    SET
+      first_name = ${updatedGuest.firstName},
+      last_name = ${updatedGuest.lastName},
+      attending = ${updatedGuest.attending}
+    WHERE
+      id = ${updatedGuest.id}
+    RETURNING
+      guests.*
+  `;
+  return guest;
+};

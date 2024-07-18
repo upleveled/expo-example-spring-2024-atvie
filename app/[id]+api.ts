@@ -1,4 +1,8 @@
-import { deleteGuestInsecure, getGuestInsecure } from '../database/guests';
+import {
+  deleteGuestInsecure,
+  getGuestInsecure,
+  updateGuestInsecure,
+} from '../database/guests';
 import { guestsSchema } from '../migrations/00000-createTableGuests';
 
 export async function GET(
@@ -25,7 +29,6 @@ export async function DELETE(
   return Response.json({ guests: guests });
 }
 
-// TODO: Implement Edit UI
 export async function PUT(
   request: Request,
   { id }: { id: string },
@@ -40,28 +43,23 @@ export async function PUT(
         error: 'Request does not contain guest object',
         errorIssues: result.error.issues,
       },
-      {
-        status: 400,
-      },
+      { status: 400 },
     );
   }
 
-  const guest = await getGuestInsecure(Number(id));
+  const updatedGuest = await updateGuestInsecure({
+    id: Number(id),
+    firstName: result.data.firstName,
+    lastName: result.data.lastName,
+    attending: result.data.attending,
+  });
 
-  if (!guest) {
+  if (!updatedGuest) {
     return Response.json(
-      {
-        errors: [
-          {
-            message: `Guest ${id} not found`,
-          },
-        ],
-      },
-      {
-        status: 404,
-      },
+      { error: `No guest with id ${id} found` },
+      { status: 404 },
     );
   }
 
-  return Response.json({ guest: guest });
+  return Response.json(updatedGuest);
 }
