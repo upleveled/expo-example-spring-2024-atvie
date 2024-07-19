@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import GuestItem from '../components/GuestItem';
 import { colors } from '../constants/colors';
-import { Guest } from '../database/guests';
+import { Guest } from '../migrations/00000-createTableGuests';
 
 const styles = StyleSheet.create({
   container: {
@@ -49,7 +49,6 @@ export default function App() {
         },
       });
       const data = await response.json();
-      console.log('getGuests', data);
 
       setGuests(data.guests);
     }

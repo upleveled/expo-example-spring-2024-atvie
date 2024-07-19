@@ -1,9 +1,11 @@
-import { addGuest, getGuests, Guest } from '../database/guests';
+import { addGuestInsecure, getGuestsInsecure } from '../database/guests';
+import { guestsSchema } from '../migrations/00000-createTableGuests';
 
-export function GET(request: Request): Response {
+export async function GET(request: Request): Promise<Response> {
   const cookie = request.headers.get('cookie');
   console.log('cookie', cookie);
-  const guests = getGuests();
+  const guests = await getGuestsInsecure();
+
   return Response.json(
     { guests: guests },
     {
@@ -15,38 +17,40 @@ export function GET(request: Request): Response {
 }
 
 export async function POST(request: Request): Promise<Response> {
-  const body = await request.json();
-  const guests = getGuests();
+  const requestBody = await request.json();
 
-  if (!body.firstName || !body.lastName) {
+  const result = guestsSchema.safeParse(requestBody);
+
+  console.log(result);
+
+  if (!result.success) {
     return Response.json(
-      'Request body missing a firstName or lastName property',
+      {
+        error: 'Request does not contain guest object',
+        errorIssues: result.error.issues,
+      },
       {
         status: 400,
       },
     );
   }
 
-  if (Object.keys(body).length > 3) {
-    return Response.json(
-      'Request body contains more than firstName, lastName and deadline properties',
-      {
-        status: 400,
-      },
-    );
-  }
-
-  console.log('first name', body.firstName);
-  console.log('last name', body.lastName);
-
-  const guest: Guest = {
-    id: guests.length + 1,
-    firstName: body.firstName as string,
-    lastName: body.lastName as string,
+  const newGuest = {
+    firstName: result.data.firstName,
+    lastName: result.data.lastName,
     attending: false,
   };
 
-  const allGuests = addGuest(guest);
+  const guest = await addGuestInsecure(newGuest);
 
-  return Response.json(allGuests);
+  if (!guest) {
+    return Response.json(
+      { error: 'Guest not created' },
+      {
+        status: 500,
+      },
+    );
+  }
+
+  return Response.json({ guest: guest });
 }

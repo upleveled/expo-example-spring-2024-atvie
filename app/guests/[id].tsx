@@ -3,7 +3,7 @@ import { Link, router, useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { colors } from '../../constants/colors';
-import { Guest } from '../../database/guests';
+import { Guest } from '../../migrations/00000-createTableGuests';
 
 const styles = StyleSheet.create({
   container: {
@@ -47,8 +47,7 @@ export default function Guests() {
         }
         const response = await fetch(`/${id}`);
         const fetchedGuest = await response.json();
-        console.log(fetchedGuest);
-        setGuest(fetchedGuest);
+        setGuest(fetchedGuest.guest);
       } catch (error) {
         console.error('Error fetching guest', error);
       }

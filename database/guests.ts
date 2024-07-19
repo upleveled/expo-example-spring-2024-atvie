@@ -1,44 +1,55 @@
-declare module globalThis {
-  let guestsDatabase: Guest[];
-}
+import { Guest } from '../migrations/00000-createTableGuests';
+import { sql } from './connect';
 
-// Initialize database to empty array only once
-//
-// TODO: Add a full PostgreSQL database connection
-if (!('guestsDatabase' in globalThis)) {
-  globalThis.guestsDatabase = [];
-}
-
-const guests = globalThis.guestsDatabase;
-
-console.log('guests in db', guests);
-
-export type Guest = {
-  id: number;
-  firstName: string;
-  lastName: string;
-  attending: boolean;
+export const getGuestsInsecure = async () => {
+  const guests = await sql<Guest[]>`
+    SELECT
+      *
+    FROM
+      guests
+  `;
+  return guests;
 };
 
-export function getGuests() {
-  return guests;
-}
+export const getGuestInsecure = async (id: number) => {
+  const [guest] = await sql<Guest[]>`
+    SELECT
+      *
+    FROM
+      guests
+    WHERE
+      id = ${id}
+  `;
+  return guest;
+};
 
-export function getGuest(id: number) {
-  return guests.find((guest: Guest) => Number(guest.id) === Number(id));
-}
+export const addGuestInsecure = async (newGuest: Omit<Guest, 'id'>) => {
+  const [guest] = await sql<Guest[]>`
+    INSERT INTO
+      guests (
+        first_name,
+        last_name,
+        attending
+      )
+    VALUES
+      (
+        ${newGuest.firstName},
+        ${newGuest.lastName},
+        ${newGuest.attending}
+      )
+    RETURNING
+      guests.*
+  `;
+  return guest;
+};
 
-export function addGuest(guest: Guest) {
-  guests.push(guest);
-  return guests;
-}
-
-export function deleteGuest(id: number) {
-  const index = guests.findIndex((guest) => guest.id === id);
-
-  if (index === -1) {
-    return;
-  }
-  guests.splice(index, 1);
-  return guests;
-}
+export const deleteGuestInsecure = async (id: number) => {
+  const [guest] = await sql<Guest[]>`
+    DELETE FROM guests
+    WHERE
+      id = ${id}
+    RETURNING
+      guests.*
+  `;
+  return guest;
+};
