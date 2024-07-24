@@ -8,7 +8,7 @@ importers:
 
   .:
     dependencies:
-      '@expo-google-fonts/roboto':
+      '@expo-google-fonts/poppins':
         specifier: ^0.2.3
         version: 0.2.3
       '@upleveled/ley':
@@ -1033,8 +1033,8 @@ packages:
     resolution: {integrity: sha512-BsWiH1yFGjXXS2yvrf5LyuoSIIbPrGUWob917o+BTKuZ7qJdxX8aJLRxs1fS9n6r7vESrq1OUqb68dANcFXuQQ==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
-  '@expo-google-fonts/roboto@0.2.3':
-    resolution: {integrity: sha512-PF6S//ZYWeXfpYTwvY2oEe0d5RnqwR5KMsGjuTgg6y9p/CPK/IkWL+wsbkzjfd+Jck1Q1pRlWOoe5uz42sQFRg==}
+  '@expo-google-fonts/poppins@0.2.3':
+    resolution: {integrity: sha512-PXkur1ZY/puy1PwVFYPJx8qiI3dtBzC2ig1bo53swCt7/sI7krCGYRO6hLBNp15M0kcNh2J4cCR9ZQyFxsving==}
 
   '@expo/bunyan@4.0.0':
     resolution: {integrity: sha512-Ydf4LidRB/EBI+YrB+cVLqIseiRfjUI/AeHBgjGMtq3GroraDu81OV7zqophRgupngoL3iS3JUMDMnxO7g39qA==}
@@ -6558,7 +6558,7 @@ snapshots:
 
   '@eslint/object-schema@2.1.4': {}
 
-  '@expo-google-fonts/roboto@0.2.3': {}
+  '@expo-google-fonts/poppins@0.2.3': {}
 
   '@expo/bunyan@4.0.0':
     dependencies:

@@ -1,11 +1,11 @@
-import { Roboto_400Regular, useFonts } from '@expo-google-fonts/roboto';
-import { Link } from 'expo-router';
+import { Poppins_400Regular, useFonts } from '@expo-google-fonts/poppins';
+import { Link, router } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
-import GuestItem from '../components/GuestItem';
-import { colors } from '../constants/colors';
-import { Guest } from '../migrations/00000-createTableGuests';
+import GuestItem from '../../components/GuestItem';
+import { colors } from '../../constants/colors';
+import { Guest } from '../../migrations/00000-createTableGuests';
 
 const styles = StyleSheet.create({
   container: {
@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     backgroundColor: colors.cardBackground,
     fontSize: 24,
-    color: colors.text,
+    color: colors.cardText,
   },
 });
 
@@ -38,7 +38,7 @@ const renderItem = (item: { item: Guest }) => <GuestItem guest={item.item} />;
 export default function App() {
   const [guests, setGuests] = useState<Guest[]>([]);
   const [fontsLoaded] = useFonts({
-    Roboto_400Regular,
+    Poppins_400Regular,
   });
 
   useEffect(() => {
@@ -63,16 +63,13 @@ export default function App() {
   } else {
     return (
       <View style={styles.container}>
-        <StatusBar style="auto" />
+        <StatusBar style="light" />
         <FlatList
           style={styles.list}
           data={guests}
           renderItem={renderItem}
           keyExtractor={(item: Guest) => String(item.id)}
         />
-        <Link style={styles.button} href="/add-guest">
-          Add Guest
-        </Link>
       </View>
     );
   }

@@ -1,5 +1,5 @@
-import { Roboto_400Regular, useFonts } from '@expo-google-fonts/roboto';
-import { Slot, usePathname } from 'expo-router';
+import { Poppins_700Bold, useFonts } from '@expo-google-fonts/poppins';
+import { Stack, usePathname } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View } from 'react-native';
 import Header from '../components/Header';
@@ -32,19 +32,32 @@ function routeMapping(pathname: string) {
 export default function HomeLayout() {
   const pathname = usePathname();
   const label = routeMapping(pathname);
-  const [fontsLoaded] = useFonts({
-    Roboto_400Regular,
+  const [loaded] = useFonts({
+    Poppins_700Bold,
   });
 
-  if (!fontsLoaded) {
+  if (!loaded) {
     return null;
   }
+
   return (
     <View style={styles.container}>
       <Header label={label} />
-      <StatusBar style="auto" />
+      <StatusBar style="light" />
       <View style={styles.slot}>
-        <Slot />
+        <Stack>
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen
+            name="guests/[id]"
+            options={{
+              presentation: 'modal',
+              title: 'Guest',
+              headerStyle: {
+                backgroundColor: colors.background,
+              },
+            }}
+          />
+        </Stack>
       </View>
     </View>
   );

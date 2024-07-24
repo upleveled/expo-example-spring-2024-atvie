@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     backgroundColor: colors.cardBackground,
     fontSize: 24,
-    color: colors.text,
+    color: colors.cardText,
   },
 });
 
@@ -95,15 +95,11 @@ export default function Guests() {
           await fetch(`/${id}`, {
             method: 'DELETE',
           });
-          router.push('/');
+          router.replace('/');
         }}
       >
         <Text style={styles.button}>Delete Guest</Text>
       </Pressable>
-
-      <Link style={styles.button} href="/">
-        Back
-      </Link>
     </View>
   );
 }

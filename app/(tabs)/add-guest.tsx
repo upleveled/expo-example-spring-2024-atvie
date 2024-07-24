@@ -1,7 +1,8 @@
 import { Link, router } from 'expo-router';
 import { useState } from 'react';
 import { Pressable, StyleSheet, Text, TextInput } from 'react-native';
-import { colors } from '../constants/colors';
+import { set } from 'zod';
+import { colors } from '../../constants/colors';
 
 const styles = StyleSheet.create({
   container: {
@@ -24,7 +25,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     backgroundColor: colors.cardBackground,
     fontSize: 24,
-    color: colors.text,
+    color: colors.cardText,
   },
 });
 
@@ -61,14 +62,16 @@ export default function NewGuest() {
               lastName,
             }),
           });
+          setFirstName('');
+          setLastName('');
           router.push('/');
         }}
       >
         <Text style={styles.button}>Add Guest</Text>
       </Pressable>
-      <Link href="/" style={styles.button}>
+      {/* <Link href="/" style={styles.button}>
         Back to List
-      </Link>
+      </Link> */}
     </>
   );
 }

@@ -12,7 +12,7 @@
     "web": "expo start --web"
   },
   "dependencies": {
-    "@expo-google-fonts/roboto": "^0.2.3",
+    "@expo-google-fonts/poppins": "^0.2.3",
     "@upleveled/ley": "^0.8.6",
     "dotenv-safe": "^9.1.0",
     "expo": "~51.0.14",

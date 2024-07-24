@@ -15,10 +15,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   label: {
-    color: colors.text,
+    color: colors.cardText,
     fontSize: 32,
     textAlign: 'center',
-    fontFamily: 'Roboto_400Regular',
+    fontFamily: 'Poppins_700Bold',
   },
   logo: {
     width: 50,
