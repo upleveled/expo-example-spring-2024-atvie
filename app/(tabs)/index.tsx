@@ -1,5 +1,4 @@
 import { Poppins_400Regular, useFonts } from '@expo-google-fonts/poppins';
-import { Link, router } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';

@@ -1,7 +1,6 @@
-import { Link, router } from 'expo-router';
+import { router } from 'expo-router';
 import { useState } from 'react';
 import { Pressable, StyleSheet, Text, TextInput } from 'react-native';
-import { set } from 'zod';
 import { colors } from '../../constants/colors';
 
 const styles = StyleSheet.create({
@@ -69,9 +68,6 @@ export default function NewGuest() {
       >
         <Text style={styles.button}>Add Guest</Text>
       </Pressable>
-      {/* <Link href="/" style={styles.button}>
-        Back to List
-      </Link> */}
     </>
   );
 }
