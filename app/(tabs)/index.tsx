@@ -16,19 +16,7 @@ const styles = StyleSheet.create({
   },
   list: {
     marginTop: 30,
-    paddingLeft: 30,
-    paddingRight: 30,
     width: '100%',
-  },
-  button: {
-    marginTop: 30,
-    paddingTop: 10,
-    paddingBottom: 10,
-    width: '100%',
-    textAlign: 'center',
-    backgroundColor: colors.cardBackground,
-    fontSize: 24,
-    color: colors.cardText,
   },
 });
 

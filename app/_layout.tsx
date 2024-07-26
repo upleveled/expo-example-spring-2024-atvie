@@ -1,39 +1,32 @@
-import { Poppins_700Bold, useFonts } from '@expo-google-fonts/poppins';
-import { Stack, usePathname } from 'expo-router';
+import {
+  Poppins_400Regular,
+  Poppins_700Bold,
+  useFonts,
+} from '@expo-google-fonts/poppins';
+import Constants from 'expo-constants';
+import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View } from 'react-native';
-import Header from '../components/Header';
 import { colors } from '../constants/colors';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.background,
-    paddingBottom: 40,
   },
   slot: {
     flex: 1,
-    paddingLeft: 30,
-    paddingRight: 30,
+    paddingLeft: 10,
+    paddingRight: 10,
+    paddingTop: Constants.statusBarHeight + 20,
+    paddingBottom: 30,
   },
 });
 
-function routeMapping(pathname: string) {
-  switch (pathname) {
-    case '/':
-      return 'Guest List';
-    case '/add-guest':
-      return 'Add Guest';
-    default:
-      return '';
-  }
-}
-
 export default function HomeLayout() {
-  const pathname = usePathname();
-  const label = routeMapping(pathname);
   const [loaded] = useFonts({
     Poppins_700Bold,
+    Poppins_400Regular,
   });
 
   if (!loaded) {
@@ -42,7 +35,6 @@ export default function HomeLayout() {
 
   return (
     <View style={styles.container}>
-      <Header label={label} />
       <StatusBar style="light" />
       <View style={styles.slot}>
         <Stack>
@@ -51,7 +43,9 @@ export default function HomeLayout() {
             name="guests/[id]"
             options={{
               presentation: 'modal',
-              title: 'Guest',
+              title: '',
+              animation: 'slide_from_bottom',
+              headerTintColor: colors.text,
               headerStyle: {
                 backgroundColor: colors.background,
               },

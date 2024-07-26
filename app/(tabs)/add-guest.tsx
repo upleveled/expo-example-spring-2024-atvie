@@ -1,30 +1,51 @@
 import { router } from 'expo-router';
 import { useState } from 'react';
-import { Pressable, StyleSheet, Text, TextInput } from 'react-native';
+import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { colors } from '../../constants/colors';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    padding: 10,
     backgroundColor: colors.background,
-    alignItems: 'center',
-    justifyContent: 'center',
+  },
+  addGuestContainer: {
+    backgroundColor: colors.cardBackground,
+    borderRadius: 12,
+    padding: 12,
+    marginBottom: 16,
+  },
+  label: {
+    fontSize: 18,
+    fontFamily: 'Poppins_400Regular',
+    color: colors.text,
+    marginBottom: 8,
   },
   input: {
-    marginTop: 30,
-    paddingLeft: 30,
-    paddingRight: 30,
-    width: '100%',
+    backgroundColor: colors.background,
+    borderColor: colors.textSecondary,
+    borderWidth: 1,
+    padding: 8,
+    marginBottom: 16,
   },
   button: {
     marginTop: 30,
-    paddingTop: 10,
-    paddingBottom: 10,
-    width: '100%',
-    textAlign: 'center',
     backgroundColor: colors.cardBackground,
-    fontSize: 24,
-    color: colors.cardText,
+    padding: 10,
+    borderRadius: 12,
+    color: colors.text,
+    shadowColor: colors.shadow,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 4,
+  },
+  text: {
+    fontFamily: 'Poppins_400Regular',
+    color: colors.text,
+    textAlign: 'center',
+    fontSize: 18,
   },
 });
 
@@ -33,21 +54,24 @@ export default function NewGuest() {
   const [lastName, setLastName] = useState('');
 
   return (
-    <>
-      <TextInput
-        style={styles.input}
-        onChangeText={setFirstName}
-        placeholder="First Name"
-        value={firstName}
-      />
-      <TextInput
-        style={styles.input}
-        onChangeText={setLastName}
-        placeholder="Last Name"
-        value={lastName}
-      />
+    <SafeAreaView style={styles.container}>
+      <View style={styles.addGuestContainer}>
+        <Text style={styles.label}>First Name</Text>
+        <TextInput
+          style={styles.input}
+          value={firstName}
+          onChangeText={setFirstName}
+        />
+        <Text style={styles.label}>Last Name</Text>
+        <TextInput
+          style={styles.input}
+          value={lastName}
+          onChangeText={setLastName}
+        />
+      </View>
       <Pressable
         style={({ pressed }) => [
+          styles.button,
           {
             width: '100%',
             opacity: pressed ? 0.5 : 1,
@@ -66,8 +90,8 @@ export default function NewGuest() {
           router.push('/');
         }}
       >
-        <Text style={styles.button}>Add Guest</Text>
+        <Text style={styles.text}>Add Guest</Text>
       </Pressable>
-    </>
+    </SafeAreaView>
   );
 }
