@@ -16,7 +16,6 @@ const styles = StyleSheet.create({
   },
   list: {
     marginTop: 30,
-    width: '100%',
   },
 });
 

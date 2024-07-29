@@ -7,7 +7,7 @@ import { Guest } from '../migrations/00000-createTableGuests';
 
 const styles = StyleSheet.create({
   container: {
-    flexGrow: 1,
+    flex: 1,
     backgroundColor: colors.background,
   },
   card: {
@@ -21,22 +21,16 @@ const styles = StyleSheet.create({
     padding: 16,
     marginBottom: 16,
     flexDirection: 'row',
+    alignItems: 'center',
     justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  cardContent: {
-    flexDirection: 'row',
-    alignItems: 'center',
   },
   avatar: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
+    width: 50,
+    height: 50,
+    borderRadius: 25,
     borderWidth: 1,
     borderColor: colors.textSecondary,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 16,
+    marginRight: 8,
     overflow: 'hidden',
   },
   avatarImage: {
@@ -44,6 +38,7 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   info: {
+    flex: 1,
     marginLeft: 16,
   },
   name: {
@@ -51,14 +46,15 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: colors.text,
   },
-  status: {
+  attending: {
     fontFamily: 'Poppins_700Bold',
     fontSize: 14,
     color: colors.textSecondary,
   },
-  actions: {
+  actionContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+    marginLeft: 16,
   },
   button: {
     marginLeft: 16,
@@ -82,23 +78,25 @@ export default function GuestItem({ guest }: Props) {
   return (
     <TouchableOpacity style={styles.container} onPress={openGuest}>
       <View key={`user-${id}`} style={styles.card}>
-        <View style={styles.cardContent}>
-          <View style={styles.avatar}>
-            <Image
-              source={{ uri: '/placeholder-user.jpg' }}
-              style={styles.avatarImage}
-            />
-          </View>
-          <View style={styles.info}>
-            <Text style={styles.name}>
-              {firstName} {lastName}
-            </Text>
-            <Text style={styles.status}>
-              {attending ? 'Attending' : 'Not Attending'}
-            </Text>
-          </View>
+        <View style={styles.avatar}>
+          <Image
+            style={styles.avatarImage}
+            source={{
+              uri: `https://res.cloudinary.com/trueque-image/image/upload/v1713269496/guest-${id}.webp`,
+            }}
+            placeholder={require('../assets/candidate-default.avif')}
+            placeholderContentFit="cover"
+          />
         </View>
-        <View style={styles.actions}>
+        <View style={styles.info}>
+          <Text style={styles.name} numberOfLines={1} ellipsizeMode="tail">
+            {firstName} {lastName}
+          </Text>
+          <Text style={styles.attending}>
+            {attending ? 'Attending' : 'Not Attending'}
+          </Text>
+        </View>
+        <View style={styles.actionContainer}>
           <Switch
             value={attending}
             onValueChange={() => {}}

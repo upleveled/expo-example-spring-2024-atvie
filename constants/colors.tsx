@@ -6,4 +6,6 @@ export const colors = {
   cardBackground: '#112240',
   shadow: '#000000',
   switch: '#64ffda',
+  white: '#ffffff',
+  red: '#ff0000',
 };

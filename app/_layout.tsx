@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     paddingRight: 10,
     paddingTop: Constants.statusBarHeight + 20,
-    paddingBottom: 30,
+    paddingBottom: 20,
   },
 });
 

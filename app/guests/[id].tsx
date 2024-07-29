@@ -1,7 +1,8 @@
 import { Ionicons } from '@expo/vector-icons';
+import { Image } from 'expo-image';
 import { router, useLocalSearchParams } from 'expo-router';
 import React, { useEffect, useState } from 'react';
-import { Image, Pressable, StyleSheet, Switch, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Switch, Text, View } from 'react-native';
 import { colors } from '../../constants/colors';
 import { Guest } from '../../migrations/00000-createTableGuests';
 
@@ -12,7 +13,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: colors.background,
   },
-  avatarContainer: {
+  avatar: {
     width: 200,
     height: 200,
     borderRadius: 100,
@@ -21,7 +22,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     marginBottom: 16,
   },
-  avatar: {
+  avatarImage: {
     width: '100%',
     height: '100%',
   },
@@ -91,7 +92,7 @@ export default function Component() {
   }
   return (
     <View style={styles.container}>
-      <View style={styles.avatarContainer}>
+      <View style={styles.avatar}>
         {/* Use dynamic import of images
         <Image
           style={styles.avatar}
@@ -99,14 +100,16 @@ export default function Component() {
           alt="profile picture"
         /> */}
         <Image
-          style={styles.avatar}
+          style={styles.avatarImage}
           source={{
             uri: `https://res.cloudinary.com/trueque-image/image/upload/v1713269496/guest-${id}.webp`,
           }}
+          placeholder={require('../../assets/candidate-default.avif')}
+          placeholderContentFit="cover"
         />
       </View>
       <View style={styles.main}>
-        <Text style={styles.text}>
+        <Text style={styles.text} numberOfLines={1} ellipsizeMode="tail">
           {guest.firstName} {guest.lastName}
         </Text>
 
