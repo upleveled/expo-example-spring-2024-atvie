@@ -39,7 +39,6 @@ function Snackbar({ actionText, errorMessage, setErrorMessage }: Props) {
       setIsVisible(true);
       const timeout = setTimeout(() => {
         setIsVisible(false);
-        // setErrorMessage('');
       }, 3000);
 
       return () => clearTimeout(timeout);
