@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { colors } from '../constants/colors';
 
@@ -44,7 +44,7 @@ function Snackbar({ actionText, errorMessage, setErrorMessage }: Props) {
 
       return () => clearTimeout(timeout);
     }
-  }, [errorMessage]);
+  }, [errorMessage, setErrorMessage]);
 
   if (!isVisible) {
     return null;
