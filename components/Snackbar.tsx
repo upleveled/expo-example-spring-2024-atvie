@@ -25,19 +25,18 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function Snackbar({
-  actionText,
-  errorMessage,
-  setErrorMessage,
-}: {
+type Props = {
   actionText: string;
   errorMessage: string;
   setErrorMessage: (message: string) => void;
-}) {
-  const [isVisible, setIsVisible] = useState(true);
+};
+
+function Snackbar({ actionText, errorMessage, setErrorMessage }: Props) {
+  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    if (isVisible) {
+    if (errorMessage) {
+      setIsVisible(true);
       const timeout = setTimeout(() => {
         setIsVisible(false);
         setErrorMessage('');
@@ -45,27 +44,27 @@ export default function Snackbar({
 
       return () => clearTimeout(timeout);
     }
-  }, [isVisible]);
-
-  useEffect(() => {
-    setIsVisible(true);
   }, [errorMessage]);
 
+  if (!isVisible) {
+    return null;
+  }
+
   return (
-    isVisible && (
-      <View style={styles.container}>
-        <Text style={styles.messageText}>{errorMessage}</Text>
-        {!!actionText && (
-          <TouchableOpacity
-            onPress={() => {
-              setIsVisible(false);
-              setErrorMessage('');
-            }}
-          >
-            <Text style={styles.actionText}>{actionText}</Text>
-          </TouchableOpacity>
-        )}
-      </View>
-    )
+    <View style={styles.container}>
+      <Text style={styles.messageText}>{errorMessage}</Text>
+      {!!actionText && (
+        <TouchableOpacity
+          onPress={() => {
+            setIsVisible(false);
+            setErrorMessage('');
+          }}
+        >
+          <Text style={styles.actionText}>{actionText}</Text>
+        </TouchableOpacity>
+      )}
+    </View>
   );
 }
+
+export default Snackbar;
