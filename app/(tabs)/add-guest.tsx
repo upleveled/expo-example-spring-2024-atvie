@@ -40,16 +40,12 @@ const styles = StyleSheet.create({
   inputFocused: {
     borderColor: colors.white,
   },
-  inputError: {
-    borderColor: colors.red,
-  },
   button: {
     marginTop: 30,
-    backgroundColor: colors.cardBackground,
-    padding: 10,
+    backgroundColor: colors.text,
+    padding: 12,
     borderRadius: 12,
-    color: colors.text,
-    shadowColor: colors.shadow,
+    shadowColor: colors.white,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 4,
@@ -58,7 +54,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontFamily: 'Poppins_400Regular',
-    color: colors.text,
+    color: colors.cardBackground,
     textAlign: 'center',
     fontSize: 18,
   },
@@ -69,10 +65,6 @@ export default function NewGuest() {
   const [lastName, setLastName] = useState('');
   const [focusedInput, setFocusedInput] = useState<string | undefined>();
   const [errorMessage, setErrorMessage] = useState('');
-  const [errorInput, setErrorInput] = useState({
-    firstName: false,
-    lastName: false,
-  });
 
   return (
     <SafeAreaView style={styles.container}>
@@ -82,7 +74,6 @@ export default function NewGuest() {
           style={[
             styles.input,
             focusedInput === 'firstName' && styles.inputFocused,
-            errorInput.firstName && styles.inputError,
           ]}
           value={firstName}
           onChangeText={setFirstName}
@@ -94,7 +85,6 @@ export default function NewGuest() {
           style={[
             styles.input,
             focusedInput === 'lastName' && styles.inputFocused,
-            errorInput.lastName && styles.inputError,
           ]}
           value={lastName}
           onChangeText={setLastName}
@@ -105,45 +95,26 @@ export default function NewGuest() {
       <Pressable
         style={({ pressed }) => [styles.button, { opacity: pressed ? 0.5 : 1 }]}
         onPress={async () => {
-          if (!firstName && !lastName) {
-            setErrorMessage('First and last name required');
-            setErrorInput({ firstName: true, lastName: true });
-            return;
-          }
-          if (!lastName) {
-            setErrorMessage('Last name is required');
-            setErrorInput({ firstName: false, lastName: true });
-            return;
-          }
-          if (!firstName) {
-            setErrorMessage('First name is required');
-            setErrorInput({ firstName: true, lastName: false });
+          const response = await fetch('/guests', {
+            method: 'POST',
+            body: JSON.stringify({ firstName, lastName }),
+          });
+
+          if (!response.ok) {
+            let newErrorMessage = 'Error creating guest';
+            try {
+              const responseBody = await response.json();
+              if ('error' in responseBody) {
+                newErrorMessage = responseBody.error;
+              }
+            } catch {}
+            setErrorMessage(newErrorMessage);
             return;
           }
 
-          try {
-            const response = await fetch('/guests', {
-              method: 'POST',
-              body: JSON.stringify({ firstName, lastName }),
-            });
-
-            if (!response.ok) {
-              let newErrorMessage = 'Error creating guest';
-              try {
-                const responseBody = await response.json();
-                if ('error' in responseBody) {
-                  newErrorMessage = responseBody.error;
-                }
-              } catch {}
-              setErrorMessage(newErrorMessage);
-              return;
-            }
-
-            setFirstName('');
-            setLastName('');
-            setErrorInput({ firstName: false, lastName: false });
-            router.push('/');
-          } catch {}
+          setFirstName('');
+          setLastName('');
+          router.push('/');
         }}
       >
         <Text style={styles.text}>Add Guest</Text>
