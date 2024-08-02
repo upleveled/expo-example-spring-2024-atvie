@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { set } from 'zod';
 import { colors } from '../constants/colors';
 
 const styles = StyleSheet.create({
@@ -45,7 +44,7 @@ function Snackbar({ actionText, errorMessage, setErrorMessage }: Props) {
 
       return () => clearTimeout(timeout);
     }
-  }, [errorMessage]);
+  }, [errorMessage, setErrorMessage]);
 
   if (!isVisible) {
     return null;
