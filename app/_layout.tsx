@@ -1,50 +1,72 @@
-import { Pacifico_400Regular, useFonts } from '@expo-google-fonts/pacifico';
-import { Slot, usePathname } from 'expo-router';
+import {
+  Poppins_400Regular,
+  Poppins_700Bold,
+  useFonts,
+} from '@expo-google-fonts/poppins';
+import Constants from 'expo-constants';
+import { router, Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, View } from 'react-native';
-import Header from '../components/Header';
+import { Platform, Pressable, StyleSheet, View } from 'react-native';
+import { TabBarIcon } from '../components/TabBarIcon';
 import { colors } from '../constants/colors';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.background,
-    paddingBottom: 40,
   },
   slot: {
     flex: 1,
-    paddingLeft: 30,
-    paddingRight: 30,
+    paddingLeft: 10,
+    paddingRight: 10,
+    paddingTop: Constants.statusBarHeight + 20,
+    paddingBottom: 20,
   },
 });
 
-function routeMapping(pathname: string) {
-  switch (pathname) {
-    case '/':
-      return 'Guest List';
-    case '/add-guest':
-      return 'Add Guest';
-    default:
-      return '';
-  }
+function BackButton() {
+  return (
+    <Pressable
+      style={{
+        padding: 10,
+      }}
+      onPress={() => router.back()}
+    >
+      <TabBarIcon name="chevron-down" color={colors.text} />
+    </Pressable>
+  );
 }
 
 export default function HomeLayout() {
-  const pathname = usePathname();
-  const label = routeMapping(pathname);
-  const [fontsLoaded] = useFonts({
-    Pacifico_400Regular,
+  const [loaded] = useFonts({
+    Poppins_700Bold,
+    Poppins_400Regular,
   });
 
-  if (!fontsLoaded) {
+  if (!loaded) {
     return null;
   }
+
   return (
     <View style={styles.container}>
-      <Header label={label} />
-      <StatusBar style="auto" />
+      <StatusBar style="light" />
       <View style={styles.slot}>
-        <Slot />
+        <Stack>
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen
+            name="guests/[id]"
+            options={{
+              presentation: 'modal',
+              title: '',
+              animation: 'slide_from_bottom',
+              headerTintColor: colors.text,
+              headerRight: Platform.OS === 'ios' ? BackButton : undefined,
+              headerStyle: {
+                backgroundColor: colors.background,
+              },
+            }}
+          />
+        </Stack>
       </View>
     </View>
   );
