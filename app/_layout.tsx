@@ -4,9 +4,10 @@ import {
   useFonts,
 } from '@expo-google-fonts/poppins';
 import Constants from 'expo-constants';
-import { Stack } from 'expo-router';
+import { router, Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, View } from 'react-native';
+import { Platform, Pressable, StyleSheet, View } from 'react-native';
+import { TabBarIcon } from '../components/TabBarIcon';
 import { colors } from '../constants/colors';
 
 const styles = StyleSheet.create({
@@ -22,6 +23,19 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
   },
 });
+
+function BackButton() {
+  return (
+    <Pressable
+      style={{
+        padding: 10,
+      }}
+      onPress={() => router.back()}
+    >
+      <TabBarIcon name="chevron-down" color={colors.text} />
+    </Pressable>
+  );
+}
 
 export default function HomeLayout() {
   const [loaded] = useFonts({
@@ -46,6 +60,7 @@ export default function HomeLayout() {
               title: '',
               animation: 'slide_from_bottom',
               headerTintColor: colors.text,
+              headerRight: Platform.OS === 'ios' ? BackButton : undefined,
               headerStyle: {
                 backgroundColor: colors.background,
               },
