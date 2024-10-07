@@ -1,7 +1,7 @@
+import { config } from 'dotenv-safe';
 import postgres, { Sql } from 'postgres';
-import { postgresConfig, setEnvironmentVariables } from '../util/config';
 
-setEnvironmentVariables();
+config();
 
 declare module globalThis {
   let postgresSqlClient: Sql;
@@ -11,8 +11,14 @@ declare module globalThis {
 // https://github.com/vercel/next.js/issues/7811#issuecomment-715259370
 function connectOneTimeToDatabase() {
   if (!('postgresSqlClient' in globalThis)) {
-    globalThis.postgresSqlClient = postgres(postgresConfig);
+    globalThis.postgresSqlClient = postgres({
+      transform: {
+        ...postgres.camel,
+        undefined: null,
+      },
+    });
   }
+
   return globalThis.postgresSqlClient;
 }
 
