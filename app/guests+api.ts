@@ -1,4 +1,4 @@
-import { addGuestInsecure, getGuestsInsecure } from '../database/guests';
+import { createGuestInsecure, getGuestsInsecure } from '../database/guests';
 import { guestsSchema } from '../migrations/00000-createTableGuests';
 
 export async function GET(request: Request): Promise<Response> {
@@ -41,7 +41,7 @@ export async function POST(request: Request): Promise<Response> {
     attending: false,
   };
 
-  const guest = await addGuestInsecure(newGuest);
+  const guest = await createGuestInsecure(newGuest);
 
   if (!guest) {
     return Response.json(
