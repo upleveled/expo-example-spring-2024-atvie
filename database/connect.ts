@@ -1,6 +1,5 @@
 import postgres, { Sql } from 'postgres';
-import postgresConfig from '../ley.config';
-import { setEnvironmentVariables } from '../util/config';
+import { postgresConfig, setEnvironmentVariables } from '../util/config';
 
 setEnvironmentVariables();
 
