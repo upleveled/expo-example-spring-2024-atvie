@@ -44,8 +44,9 @@ export default function Guests() {
         if (typeof id !== 'string') {
           return;
         }
-        const response = await fetch(`/${id}`);
+        const response = await fetch(`/api/${id}`);
         const fetchedGuest = await response.json();
+
         setGuest(fetchedGuest.guest);
       } catch (error) {
         console.error('Error fetching guest', error);
