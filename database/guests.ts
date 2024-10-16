@@ -1,19 +1,7 @@
 import { Guest } from '../migrations/00000-createTableGuests';
 import { sql } from './connect';
 
-// eslint-disable-next-line no-restricted-syntax
-export const getGuests = async (
-  // FIXME: Rename insecureSessionToken to sessionToken everywhere
-  insecureSessionToken: string,
-) => {
-  // FIXME: Remove this early return when proper session token validation is implemented (see FIXME in query below)
-  if (
-    insecureSessionToken !==
-    'ae96c51f--fixme--insecure-hardcoded-session-token--5a3e491b4f'
-  ) {
-    return null;
-  }
-
+export const getGuestsInsecure = async () => {
   const guests = await sql<Guest[]>`
     SELECT
       *
@@ -23,20 +11,7 @@ export const getGuests = async (
   return guests;
 };
 
-// eslint-disable-next-line no-restricted-syntax
-export const getGuest = async (
-  // FIXME: Rename insecureSessionToken to sessionToken everywhere
-  insecureSessionToken: string,
-  id: number,
-) => {
-  // FIXME: Remove this early return when proper session token validation is implemented (see FIXME in query below)
-  if (
-    insecureSessionToken !==
-    'ae96c51f--fixme--insecure-hardcoded-session-token--5a3e491b4f'
-  ) {
-    return null;
-  }
-
+export const getGuestInsecure = async (id: number) => {
   const [guest] = await sql<Guest[]>`
     SELECT
       *
@@ -48,20 +23,7 @@ export const getGuest = async (
   return guest;
 };
 
-// eslint-disable-next-line no-restricted-syntax
-export const createGuest = async (
-  // FIXME: Rename insecureSessionToken to sessionToken everywhere
-  insecureSessionToken: string,
-  newGuest: Omit<Guest, 'id'>,
-) => {
-  // FIXME: Remove this early return when proper session token validation is implemented (see FIXME in query below)
-  if (
-    insecureSessionToken !==
-    'ae96c51f--fixme--insecure-hardcoded-session-token--5a3e491b4f'
-  ) {
-    return null;
-  }
-
+export const createGuestInsecure = async (newGuest: Omit<Guest, 'id'>) => {
   const [guest] = await sql<Guest[]>`
     INSERT INTO
       guests (
@@ -81,20 +43,7 @@ export const createGuest = async (
   return guest;
 };
 
-// eslint-disable-next-line no-restricted-syntax
-export const deleteGuest = async (
-  // FIXME: Rename insecureSessionToken to sessionToken everywhere
-  insecureSessionToken: string,
-  id: number,
-) => {
-  // FIXME: Remove this early return when proper session token validation is implemented (see FIXME in query below)
-  if (
-    insecureSessionToken !==
-    'ae96c51f--fixme--insecure-hardcoded-session-token--5a3e491b4f'
-  ) {
-    return null;
-  }
-
+export const deleteGuestInsecure = async (id: number) => {
   const [guest] = await sql<Guest[]>`
     DELETE FROM guests
     WHERE

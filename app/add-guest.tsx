@@ -53,7 +53,7 @@ export default function NewGuest() {
           },
         ]}
         onPress={async () => {
-          await fetch(`/api/guests`, {
+          await fetch(`/guests`, {
             method: 'POST',
             body: JSON.stringify({
               firstName,
