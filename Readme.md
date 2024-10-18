@@ -12,3 +12,4 @@ The Expo Example Spring 2024, is a project that demonstrates how to use React Na
 
 - React Native
 - Expo
+- PostgreSQL

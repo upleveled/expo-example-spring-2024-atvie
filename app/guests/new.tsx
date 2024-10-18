@@ -1,7 +1,7 @@
 import { Link, router } from 'expo-router';
 import { useState } from 'react';
 import { Pressable, StyleSheet, Text, TextInput } from 'react-native';
-import { colors } from '../constants/colors';
+import { colors } from '../../constants/colors';
 
 const styles = StyleSheet.create({
   container: {
