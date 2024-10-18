@@ -69,7 +69,7 @@ export default function App() {
           renderItem={renderItem}
           keyExtractor={(item: Guest) => String(item.id)}
         />
-        <Link style={styles.button} href="/add-guest">
+        <Link style={styles.button} href="/guests/new">
           Add Guest
         </Link>
       </View>
