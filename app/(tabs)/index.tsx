@@ -1,7 +1,6 @@
 import { Poppins_400Regular, useFonts } from '@expo-google-fonts/poppins';
-import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
-import { FlatList, StyleSheet, View } from 'react-native';
+import { FlatList, SafeAreaView, StyleSheet } from 'react-native';
 import GuestItem from '../../components/GuestItem';
 import { colors } from '../../constants/colors';
 import { Guest } from '../../migrations/00000-createTableGuests';
@@ -48,15 +47,14 @@ export default function App() {
     return null;
   } else {
     return (
-      <View style={styles.container}>
-        <StatusBar style="light" />
+      <SafeAreaView style={styles.container}>
         <FlatList
           style={styles.list}
           data={guests}
           renderItem={renderItem}
           keyExtractor={(item: Guest) => String(item.id)}
         />
-      </View>
+      </SafeAreaView>
     );
   }
 }

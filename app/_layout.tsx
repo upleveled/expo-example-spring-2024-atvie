@@ -6,7 +6,13 @@ import {
 import Constants from 'expo-constants';
 import { router, Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import { Platform, Pressable, StyleSheet, View } from 'react-native';
+import {
+  Platform,
+  Pressable,
+  SafeAreaView,
+  StyleSheet,
+  View,
+} from 'react-native';
 import { TabBarIcon } from '../components/TabBarIcon';
 import { colors } from '../constants/colors';
 
@@ -15,11 +21,11 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.background,
   },
-  slot: {
+  view: {
     flex: 1,
     paddingLeft: 10,
     paddingRight: 10,
-    paddingTop: Constants.statusBarHeight + 20,
+    paddingTop: Platform.OS === 'ios' ? 0 : Constants.statusBarHeight + 20,
     paddingBottom: 20,
   },
 });
@@ -48,9 +54,9 @@ export default function HomeLayout() {
   }
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <StatusBar style="light" />
-      <View style={styles.slot}>
+      <View style={styles.view}>
         <Stack>
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           <Stack.Screen
@@ -68,6 +74,6 @@ export default function HomeLayout() {
           />
         </Stack>
       </View>
-    </View>
+    </SafeAreaView>
   );
 }
