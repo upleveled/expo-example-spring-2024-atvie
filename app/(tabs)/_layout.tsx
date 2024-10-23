@@ -26,7 +26,7 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="add-guest"
+        name="guests/new"
         options={{
           title: 'Add Guest',
           tabBarIcon: ({ color, focused }) =>

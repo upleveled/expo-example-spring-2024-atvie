@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function Component() {
+export default function GuestPage() {
   const { id } = useLocalSearchParams();
 
   const [guest, setGuest] = useState<Guest>();

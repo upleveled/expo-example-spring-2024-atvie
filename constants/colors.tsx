@@ -7,5 +7,4 @@ export const colors = {
   shadow: '#000000',
   switch: '#64ffda',
   white: '#ffffff',
-  red: '#ff0000',
 };

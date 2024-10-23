@@ -40,7 +40,7 @@ export default function HomeLayout() {
         <Stack>
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           <Stack.Screen
-            name="guests/[id]"
+            name="guests/[guestId]"
             options={{
               presentation: 'modal',
               title: '',
