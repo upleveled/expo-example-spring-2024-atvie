@@ -1,6 +1,7 @@
 import { router } from 'expo-router';
 import { useState } from 'react';
 import {
+  Alert,
   Pressable,
   SafeAreaView,
   StyleSheet,
@@ -8,7 +9,6 @@ import {
   TextInput,
   View,
 } from 'react-native';
-import Snackbar from '../../components/Snackbar';
 import { colors } from '../../constants/colors';
 
 const styles = StyleSheet.create({
@@ -69,7 +69,6 @@ export default function NewGuest() {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [focusedInput, setFocusedInput] = useState<string | undefined>();
-  const [errorMessage, setErrorMessage] = useState('');
 
   return (
     <SafeAreaView style={styles.container}>
@@ -106,14 +105,15 @@ export default function NewGuest() {
           });
 
           if (!response.ok) {
-            let newErrorMessage = 'Error creating guest';
+            let errorMessage = 'Error creating guest';
             try {
               const responseBody = await response.json();
               if ('error' in responseBody) {
-                newErrorMessage = responseBody.error;
+                errorMessage = responseBody.error;
               }
             } catch {}
-            setErrorMessage(newErrorMessage);
+
+            Alert.alert('Error', errorMessage, [{ text: 'OK' }]);
             return;
           }
 
@@ -124,13 +124,6 @@ export default function NewGuest() {
       >
         <Text style={styles.text}>Add Guest</Text>
       </Pressable>
-      {!!errorMessage && (
-        <Snackbar
-          actionText="Dismiss"
-          errorMessage={errorMessage}
-          setErrorMessage={setErrorMessage}
-        />
-      )}
     </SafeAreaView>
   );
 }
