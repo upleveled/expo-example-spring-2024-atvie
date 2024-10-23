@@ -1,7 +1,6 @@
 import { deleteGuestInsecure, getGuestInsecure } from '../database/guests';
-import { guestsSchema } from '../migrations/00000-createTableGuests';
+import { Guest, guestsSchema } from '../migrations/00000-createTableGuests';
 import { ExpoApiResponse } from '../util/ExpoApiResponse';
-import { Guest } from './guests+api';
 
 type ExpoResponseBodyGet =
   | {

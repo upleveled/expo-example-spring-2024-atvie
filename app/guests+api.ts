@@ -1,13 +1,6 @@
 import { createGuestInsecure, getGuestsInsecure } from '../database/guests';
-import { guestsSchema } from '../migrations/00000-createTableGuests';
+import { Guest, guestsSchema } from '../migrations/00000-createTableGuests';
 import { ExpoApiResponse } from '../util/ExpoApiResponse';
-
-export type Guest = {
-  id: number;
-  firstName: string;
-  lastName: string;
-  attending: boolean;
-};
 
 type ExpoResponseBodyGet = {
   guests: Guest[];
