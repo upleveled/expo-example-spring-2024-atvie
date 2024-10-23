@@ -1,12 +1,27 @@
 import { createGuestInsecure, getGuestsInsecure } from '../database/guests';
 import { guestsSchema } from '../migrations/00000-createTableGuests';
+import { ExpoApiResponse } from '../util/ExpoApiResponse';
 
-export async function GET(request: Request): Promise<Response> {
+export type Guest = {
+  id: number;
+  firstName: string;
+  lastName: string;
+  attending: boolean;
+};
+
+type ExpoResponseBodyGet = {
+  guests: Guest[];
+};
+
+export async function GET(
+  request: Request,
+): Promise<ExpoApiResponse<ExpoResponseBodyGet>> {
   const cookie = request.headers.get('cookie');
   console.log('cookie', cookie);
+
   const guests = await getGuestsInsecure();
 
-  return Response.json(
+  return ExpoApiResponse.json(
     { guests: guests },
     {
       headers: {
@@ -16,7 +31,16 @@ export async function GET(request: Request): Promise<Response> {
   );
 }
 
-export async function POST(request: Request): Promise<Response> {
+type ExpoResponseBodyPost =
+  | {
+      guest: Guest;
+    }
+  | { error: string; errorIssues: { message: string }[] }
+  | { error: string };
+
+export async function POST(
+  request: Request,
+): Promise<ExpoApiResponse<ExpoResponseBodyPost>> {
   const requestBody = await request.json();
 
   const result = guestsSchema.safeParse(requestBody);
@@ -24,7 +48,7 @@ export async function POST(request: Request): Promise<Response> {
   console.log(result);
 
   if (!result.success) {
-    return Response.json(
+    return ExpoApiResponse.json(
       {
         error: 'Request does not contain guest object',
         errorIssues: result.error.issues,
@@ -44,7 +68,7 @@ export async function POST(request: Request): Promise<Response> {
   const guest = await createGuestInsecure(newGuest);
 
   if (!guest) {
-    return Response.json(
+    return ExpoApiResponse.json(
       { error: 'Guest not created' },
       {
         status: 500,
@@ -52,5 +76,5 @@ export async function POST(request: Request): Promise<Response> {
     );
   }
 
-  return Response.json({ guest: guest });
+  return ExpoApiResponse.json({ guest: guest });
 }
