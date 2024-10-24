@@ -6,9 +6,7 @@ import {
 } from '../../migrations/00000-createTableGuests';
 
 type GuestResponseBodyPost =
-  | {
-      guest: Guest;
-    }
+  | { guest: Guest }
   | { error: string; errorIssues?: { message: string }[] };
 
 export async function POST(
@@ -50,9 +48,7 @@ export async function POST(
   return ExpoApiResponse.json({ guest: guest });
 }
 
-type GuestResponseBodyGet = {
-  guests: Guest[];
-};
+type GuestResponseBodyGet = { guests: Guest[] };
 
 export async function GET(
   request: Request,

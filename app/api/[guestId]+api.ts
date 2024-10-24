@@ -9,11 +9,7 @@ import {
   guestsSchema,
 } from '../../migrations/00000-createTableGuests';
 
-type GuestResponseBodyGet =
-  | {
-      guest: Guest;
-    }
-  | { error: string };
+type GuestResponseBodyGet = { guest: Guest } | { error: string };
 
 export async function GET(
   request: Request,
@@ -31,9 +27,7 @@ export async function GET(
 }
 
 type GuestResponseBodyPut =
-  | {
-      guest: Guest;
-    }
+  | { guest: Guest }
   | { error: string; errorIssues?: { message: string }[] };
 
 export async function PUT(
@@ -71,11 +65,7 @@ export async function PUT(
   return ExpoApiResponse.json({ guest: updatedGuest });
 }
 
-type GuestResponseBodyDelete =
-  | {
-      guest: Guest;
-    }
-  | { error: string };
+type GuestResponseBodyDelete = { guest: Guest } | { error: string };
 
 export async function DELETE(
   request: Request,
