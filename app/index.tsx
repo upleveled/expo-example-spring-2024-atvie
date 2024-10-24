@@ -4,6 +4,7 @@ import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import GuestItem from '../components/GuestItem';
+import UserItem from '../components/UserItem';
 import { colors } from '../constants/colors';
 import { Guest } from '../migrations/00000-createTableGuests';
 
@@ -31,6 +32,8 @@ const styles = StyleSheet.create({
     fontSize: 24,
   },
 });
+
+// const renderItem = (item: { item: Guest }) => <UserItem user={item.item} />;
 
 const renderItem = (item: { item: Guest }) => <GuestItem guest={item.item} />;
 
@@ -69,7 +72,7 @@ export default function App() {
           renderItem={renderItem}
           keyExtractor={(item: Guest) => String(item.id)}
         />
-        <Link style={styles.button} href="/add-guest">
+        <Link style={styles.button} href="/guests/new">
           Add Guest
         </Link>
       </View>

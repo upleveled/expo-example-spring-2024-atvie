@@ -1,13 +1,8 @@
-import { router } from 'expo-router';
-import { StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { colors } from '../constants/colors';
 import { Guest } from '../migrations/00000-createTableGuests';
 
 const styles = StyleSheet.create({
-  right: {
-    textAlign: 'right',
-    fontSize: 10,
-  },
   center: {
     textAlign: 'center',
   },
@@ -34,25 +29,20 @@ const styles = StyleSheet.create({
 });
 
 type Props = {
-  guest: Guest;
+  user: {
+    firstName: string;
+    lastName: string;
+  };
 };
 
-export default function GuestItem({ guest }: Props) {
-  const { id, firstName, lastName, attending } = guest;
-
-  const openGuest = () => {
-    router.push({
-      pathname: `/guests/[guestId]`,
-      params: { id },
-    });
-  };
+export default function UserItem({ user }: Props) {
+  const { firstName, lastName } = user;
 
   return (
-    <TouchableOpacity style={styles.card} onPress={openGuest}>
+    <View style={styles.card}>
       <Text style={styles.center}>
         {firstName} {lastName}
       </Text>
-      <Text style={styles.right}>{attending ? 'Coming!' : 'Not coming.'}</Text>
-    </TouchableOpacity>
+    </View>
   );
 }
