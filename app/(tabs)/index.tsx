@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { FlatList, SafeAreaView, StyleSheet } from 'react-native';
 import GuestItem from '../../components/GuestItem';
 import { colors } from '../../constants/colors';
-import { Guest } from '../../migrations/00000-createTableGuests';
+import type { Guest } from '../../migrations/00000-createTableGuests';
 
 const styles = StyleSheet.create({
   container: {
