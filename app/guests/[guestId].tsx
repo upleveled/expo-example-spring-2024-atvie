@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import placeholder from '../../assets/candidate-default.avif';
 import { colors } from '../../constants/colors';
-import type { Guest } from '../../migrations/00000-createTableGuests';
+import type { GuestResponseBodyGet } from '../api/[guestId]+api';
 
 const styles = StyleSheet.create({
   container: {
@@ -126,11 +126,13 @@ export default function GuestPage() {
         }
 
         const response = await fetch(`/api/${guestId}`);
-        const body: { guest: Guest } = await response.json();
+        const body: GuestResponseBodyGet = await response.json();
 
-        setFirstName(body.guest.firstName);
-        setLastName(body.guest.lastName);
-        setAttending(body.guest.attending);
+        if ('guest' in body) {
+          setFirstName(body.guest.firstName);
+          setLastName(body.guest.lastName);
+          setAttending(body.guest.attending);
+        }
       }
 
       loadGuest().catch((error) => {
