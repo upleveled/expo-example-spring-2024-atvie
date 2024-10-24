@@ -1,4 +1,8 @@
-import { deleteGuestInsecure, getGuestInsecure } from '../../database/guests';
+import {
+  deleteGuestInsecure,
+  getGuestInsecure,
+  updateGuestInsecure,
+} from '../../database/guests';
 import { ExpoApiResponse } from '../../ExpoApiResponse';
 import { Guest, guestsSchema } from '../../migrations/00000-createTableGuests';
 
@@ -44,22 +48,25 @@ export async function PUT(
         error: 'Request does not contain guest object',
         errorIssues: result.error.issues,
       },
-      {
-        status: 400,
-      },
+      { status: 400 },
     );
   }
 
-  const guest = await getGuestInsecure(Number(guestId));
+  const updatedGuest = await updateGuestInsecure({
+    id: Number(guestId),
+    firstName: result.data.firstName,
+    lastName: result.data.lastName,
+    attending: result.data.attending,
+  });
 
-  if (!guest) {
+  if (!updatedGuest) {
     return ExpoApiResponse.json(
       { error: `Guest ${guestId} not found` },
       { status: 404 },
     );
   }
 
-  return ExpoApiResponse.json({ guest: guest });
+  return ExpoApiResponse.json({ guest: updatedGuest });
 }
 
 type GuestResponseBodyDelete =
