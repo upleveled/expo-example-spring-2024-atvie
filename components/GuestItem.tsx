@@ -94,11 +94,27 @@ export default function GuestItem({ guest }: Props) {
         <View style={styles.actionWrapper}>
           <Switch
             value={attending}
-            onValueChange={() => {}}
+            onValueChange={async () => {
+              await fetch(`/api/${id}`, {
+                method: 'PUT',
+                body: JSON.stringify({
+                  firstName,
+                  lastName,
+                  attending: !attending,
+                }),
+              });
+            }}
             trackColor={{ false: colors.textSecondary, true: colors.switch }}
             thumbColor={colors.text}
           />
-          <TouchableOpacity style={styles.button}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={async () => {
+              await fetch(`/api/${id}`, {
+                method: 'DELETE',
+              });
+            }}
+          >
             <Ionicons
               name="trash-outline"
               size={24}
