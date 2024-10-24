@@ -148,8 +148,8 @@ export default function GuestPage() {
   return (
     <View style={styles.container}>
       <View style={styles.avatar}>
-        {/* Use dynamic import of images
-        <Image
+        {/* Use dynamic import of images */}
+        {/* <Image
           style={styles.avatar}
           source={imageContext(`./guest-${guestId}.avif`)}
           alt="profile picture"
