@@ -18,13 +18,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: colors.background,
+    paddingLeft: 10,
+    paddingRight: 10,
   },
   avatar: {
     width: 200,
     height: 200,
     borderRadius: 100,
-    borderWidth: 2,
-    borderColor: colors.text,
     overflow: 'hidden',
     marginBottom: 16,
   },
@@ -38,29 +38,41 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins_700Bold',
     color: colors.text,
   },
-  main: {
+  textContainer: {
     alignItems: 'center',
     gap: 12,
   },
-
   textSecondary: {
     textAlign: 'center',
     fontSize: 14,
     fontFamily: 'Poppins_400Regular',
     color: colors.textSecondary,
   },
-  buttonRow: {
+  iconContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     marginTop: 80,
     gap: 200,
   },
-  button: {
+  icon: {
     alignItems: 'center',
     justifyContent: 'center',
   },
+  button: {
+    marginTop: 30,
+    backgroundColor: colors.text,
+    padding: 12,
+    borderRadius: 12,
+    shadowColor: colors.white,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    width: '100%',
+  },
   buttonText: {
-    color: colors.text,
+    fontFamily: 'Poppins_400Regular',
+    color: colors.cardBackground,
+    textAlign: 'center',
     fontSize: 18,
   },
   label: {
@@ -82,6 +94,13 @@ const styles = StyleSheet.create({
   },
   inputFocused: {
     borderColor: colors.white,
+  },
+  inputContainer: {
+    width: '100%',
+    backgroundColor: colors.cardBackground,
+    borderRadius: 12,
+    padding: 12,
+    marginBottom: 16,
   },
 });
 
@@ -142,31 +161,36 @@ export default function GuestPage() {
         />
       </View>
       {edit ? (
-        <View>
-          <Text style={styles.label}>First Name</Text>
-          <TextInput
-            style={[
-              styles.input,
-              focusedInput === 'firstName' && styles.inputFocused,
-            ]}
-            value={firstName}
-            onChangeText={setFirstName}
-            onFocus={() => setFocusedInput('firstName')}
-            onBlur={() => setFocusedInput(undefined)}
-          />
-          <Text style={styles.label}>Last Name</Text>
-          <TextInput
-            style={[
-              styles.input,
-              focusedInput === 'lastName' && styles.inputFocused,
-            ]}
-            value={lastName}
-            onChangeText={setLastName}
-            onFocus={() => setFocusedInput('lastName')}
-            onBlur={() => setFocusedInput(undefined)}
-          />
+        <>
+          <View style={styles.inputContainer}>
+            <Text style={styles.label}>First Name</Text>
+            <TextInput
+              style={[
+                styles.input,
+                focusedInput === 'firstName' && styles.inputFocused,
+              ]}
+              value={firstName}
+              onChangeText={setFirstName}
+              onFocus={() => setFocusedInput('firstName')}
+              onBlur={() => setFocusedInput(undefined)}
+            />
+            <Text style={styles.label}>Last Name</Text>
+            <TextInput
+              style={[
+                styles.input,
+                focusedInput === 'lastName' && styles.inputFocused,
+              ]}
+              value={lastName}
+              onChangeText={setLastName}
+              onFocus={() => setFocusedInput('lastName')}
+              onBlur={() => setFocusedInput(undefined)}
+            />
+          </View>
           <Pressable
-            style={styles.button}
+            style={({ pressed }) => [
+              styles.button,
+              { opacity: pressed ? 0.5 : 1 },
+            ]}
             onPress={async () => {
               await fetch(`/api/${guestId}`, {
                 method: 'PUT',
@@ -177,14 +201,15 @@ export default function GuestPage() {
                 }),
               });
               setEdit(false);
+              router.replace('/');
             }}
           >
             <Text style={styles.buttonText}>Save</Text>
           </Pressable>
-        </View>
+        </>
       ) : (
         <>
-          <View style={styles.main}>
+          <View style={styles.textContainer}>
             <Text style={styles.text} numberOfLines={1} ellipsizeMode="tail">
               {firstName} {lastName}
             </Text>
@@ -206,12 +231,13 @@ export default function GuestPage() {
                 setEdit(false);
                 const data = await response.json();
                 setAttending(data.guest.attending);
+                router.replace('/');
               }}
             />
           </View>
-          <View style={styles.buttonRow}>
+          <View style={styles.iconContainer}>
             <Pressable
-              style={styles.button}
+              style={styles.icon}
               onPress={() => {
                 setEdit(true);
               }}
@@ -219,7 +245,7 @@ export default function GuestPage() {
               <Ionicons name="create-outline" size={36} color={colors.text} />
             </Pressable>
             <Pressable
-              style={styles.button}
+              style={styles.icon}
               onPress={async () => {
                 await fetch(`/api/${guestId}`, {
                   method: 'DELETE',
