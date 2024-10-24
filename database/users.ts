@@ -1,9 +1,25 @@
 import type { User } from '../migrations/00001-createTableUsers';
+import type { Session } from '../migrations/00002-createTableSessions';
 import { sql } from './connect';
 
 type UserWithPasswordHash = User & {
   passwordHash: string;
 };
+
+export async function getUser(sessionToken: Session['token']) {
+  const [user] = await sql<Pick<User, 'username'>[]>`
+    SELECT
+      users.username
+    FROM
+      users
+      INNER JOIN sessions ON (
+        sessions.token = ${sessionToken}
+        AND users.id = sessions.user_id
+        AND expiry_timestamp > now()
+      )
+  `;
+  return user;
+}
 
 export async function getUserInsecure(username: User['username']) {
   const [user] = await sql<User[]>`
