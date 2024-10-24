@@ -111,7 +111,9 @@ export default function NewGuest() {
               if (body.error) {
                 errorMessage = body.error;
               }
-            } catch {}
+            } catch (error) {
+              console.error(error);
+            }
 
             Alert.alert('Error', errorMessage, [{ text: 'OK' }]);
             return;

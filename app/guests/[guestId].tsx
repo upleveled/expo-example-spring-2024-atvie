@@ -120,24 +120,22 @@ export default function GuestPage() {
 
   useFocusEffect(
     useCallback(() => {
-      const loadGuest = async () => {
-        try {
-          if (typeof guestId !== 'string') {
-            return;
-          }
-
-          const response = await fetch(`/api/${guestId}`);
-          const body: { guest: Guest } = await response.json();
-
-          setFirstName(body.guest.firstName);
-          setLastName(body.guest.lastName);
-          setAttending(body.guest.attending);
-        } catch (error) {
-          console.error('Error fetching guest', error);
+      async function loadGuest() {
+        if (typeof guestId !== 'string') {
+          return;
         }
-      };
 
-      loadGuest().catch(() => {});
+        const response = await fetch(`/api/${guestId}`);
+        const body: { guest: Guest } = await response.json();
+
+        setFirstName(body.guest.firstName);
+        setLastName(body.guest.lastName);
+        setAttending(body.guest.attending);
+      }
+
+      loadGuest().catch((error) => {
+        console.error(error);
+      });
     }, [guestId]),
   );
 

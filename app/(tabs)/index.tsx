@@ -37,23 +37,21 @@ export default function App() {
     useCallback(() => {
       if (!isStale) return;
 
-      const getGuests = async () => {
-        try {
-          const response = await fetch('/api/guests', {
-            headers: {
-              Cookie: 'name=value',
-            },
-          });
-          const body: GuestsResponseBodyGet = await response.json();
+      async function getGuests() {
+        const response = await fetch('/api/guests', {
+          headers: {
+            Cookie: 'name=value',
+          },
+        });
+        const body: GuestsResponseBodyGet = await response.json();
 
-          setGuests(body.guests);
-          setIsStale(false);
-        } catch (error) {
-          console.error('Error fetching guests', error);
-        }
-      };
+        setGuests(body.guests);
+        setIsStale(false);
+      }
 
-      getGuests().catch(() => {});
+      getGuests().catch((error) => {
+        console.error(error);
+      });
     }, [isStale]),
   );
 
