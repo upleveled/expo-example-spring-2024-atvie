@@ -3,7 +3,7 @@ import { Image } from 'expo-image';
 import { router } from 'expo-router';
 import { StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native';
 import { colors } from '../constants/colors';
-import { Guest } from '../migrations/00000-createTableGuests';
+import type { Guest } from '../migrations/00000-createTableGuests';
 
 const styles = StyleSheet.create({
   container: {
@@ -94,11 +94,27 @@ export default function GuestItem({ guest }: Props) {
         <View style={styles.actionWrapper}>
           <Switch
             value={attending}
-            onValueChange={() => {}}
+            onValueChange={async () => {
+              await fetch(`/api/${id}`, {
+                method: 'PUT',
+                body: JSON.stringify({
+                  firstName,
+                  lastName,
+                  attending: !attending,
+                }),
+              });
+            }}
             trackColor={{ false: colors.textSecondary, true: colors.switch }}
             thumbColor={colors.text}
           />
-          <TouchableOpacity style={styles.button}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={async () => {
+              await fetch(`/api/${id}`, {
+                method: 'DELETE',
+              });
+            }}
+          >
             <Ionicons
               name="trash-outline"
               size={24}
