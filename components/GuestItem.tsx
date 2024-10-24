@@ -69,13 +69,7 @@ export default function GuestItem({ guest, setIsStale }: Props) {
   const { id, firstName, lastName, attending } = guest;
 
   return (
-    <Link
-      href={{
-        pathname: '/guests/[guestId]',
-        params: { guestId: id },
-      }}
-      asChild
-    >
+    <Link href={`/guests/${id}`} asChild>
       <Pressable>
         <View style={styles.card}>
           <View style={styles.avatar}>
