@@ -3,42 +3,70 @@ import {
   getGuestInsecure,
   updateGuestInsecure,
 } from '../database/guests';
-import { guestsSchema } from '../migrations/00000-createTableGuests';
+import { ExpoApiResponse } from '../ExpoApiResponse';
+import { Guest, guestsSchema } from '../migrations/00000-createTableGuests';
+
+type ExpoResponseBodyGet =
+  | {
+      guest: Guest;
+    }
+  | { error: string };
 
 export async function GET(
   request: Request,
   { id }: { id: string },
-): Promise<Response> {
+): Promise<ExpoApiResponse<ExpoResponseBodyGet>> {
   const guest = await getGuestInsecure(Number(id));
 
   if (!guest) {
-    return Response.json(
+    return ExpoApiResponse.json(
       { error: `No guest with id ${id} found` },
       { status: 404 },
     );
   }
-  return Response.json({ guest: guest });
+  return ExpoApiResponse.json({ guest: guest });
 }
+
+type ExpoResponseBodyDelete =
+  | {
+      guest: Guest;
+    }
+  | { error: string };
 
 export async function DELETE(
   request: Request,
   { id }: { id: string },
-): Promise<Response> {
-  const guests = await deleteGuestInsecure(Number(id));
+): Promise<ExpoApiResponse<ExpoResponseBodyDelete>> {
+  const guest = await deleteGuestInsecure(Number(id));
 
-  return Response.json({ guests: guests });
+  if (!guest) {
+    return ExpoApiResponse.json(
+      { error: `Guest ${id} not found` },
+      { status: 404 },
+    );
+  }
+
+  return ExpoApiResponse.json({ guest: guest });
 }
 
+type ExpoResponseBodyPut =
+  | {
+      guest: Guest;
+    }
+  | { error: string; errorIssues: { message: string }[] }
+  | { error: string };
+
+// TODO: Implement Edit UI
 export async function PUT(
   request: Request,
   { id }: { id: string },
-): Promise<Response> {
+): Promise<ExpoApiResponse<ExpoResponseBodyPut>> {
   const requestBody = await request.json();
 
   const result = guestsSchema.safeParse(requestBody);
 
   if (!result.success) {
-    return Response.json(
+    return ExpoApiResponse.json(
       {
         error: 'Request does not contain guest object',
         errorIssues: result.error.issues,
@@ -55,11 +83,11 @@ export async function PUT(
   });
 
   if (!updatedGuest) {
-    return Response.json(
-      { error: `No guest with id ${id} found` },
+    return ExpoApiResponse.json(
+      { error: `Guest ${id} not found` },
       { status: 404 },
     );
   }
 
-  return Response.json(updatedGuest);
+  return ExpoApiResponse.json({ guest: updatedGuest });
 }

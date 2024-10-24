@@ -23,7 +23,7 @@ export const getGuestInsecure = async (id: number) => {
   return guest;
 };
 
-export const addGuestInsecure = async (newGuest: Omit<Guest, 'id'>) => {
+export const createGuestInsecure = async (newGuest: Omit<Guest, 'id'>) => {
   const [guest] = await sql<Guest[]>`
     INSERT INTO
       guests (
