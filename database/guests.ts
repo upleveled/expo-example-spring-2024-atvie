@@ -1,4 +1,4 @@
-import { Guest } from '../migrations/00000-createTableGuests';
+import type { Guest } from '../migrations/00000-createTableGuests';
 import { sql } from './connect';
 
 export const createGuestInsecure = async (newGuest: Omit<Guest, 'id'>) => {

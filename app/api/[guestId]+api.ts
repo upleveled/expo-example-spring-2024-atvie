@@ -4,7 +4,10 @@ import {
   updateGuestInsecure,
 } from '../../database/guests';
 import { ExpoApiResponse } from '../../ExpoApiResponse';
-import { Guest, guestsSchema } from '../../migrations/00000-createTableGuests';
+import {
+  type Guest,
+  guestsSchema,
+} from '../../migrations/00000-createTableGuests';
 
 type GuestResponseBodyGet =
   | {
