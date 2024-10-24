@@ -43,7 +43,7 @@ export default function GuestItem({ guest }: Props) {
   const openGuest = () => {
     router.push({
       pathname: `/guests/[guestId]`,
-      params: { id },
+      params: { guestId: id },
     });
   };
 

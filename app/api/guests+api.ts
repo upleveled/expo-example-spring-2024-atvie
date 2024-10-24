@@ -1,14 +1,14 @@
-import { createGuestInsecure, getGuestsInsecure } from '../database/guests';
-import { ExpoApiResponse } from '../ExpoApiResponse';
-import { Guest, guestsSchema } from '../migrations/00000-createTableGuests';
+import { createGuestInsecure, getGuestsInsecure } from '../../database/guests';
+import { ExpoApiResponse } from '../../ExpoApiResponse';
+import { Guest, guestsSchema } from '../../migrations/00000-createTableGuests';
 
-type ExpoResponseBodyGet = {
+type GuestResponseBodyGet = {
   guests: Guest[];
 };
 
 export async function GET(
   request: Request,
-): Promise<ExpoApiResponse<ExpoResponseBodyGet>> {
+): Promise<ExpoApiResponse<GuestResponseBodyGet>> {
   const cookie = request.headers.get('cookie');
   console.log('cookie', cookie);
 
@@ -24,7 +24,7 @@ export async function GET(
   );
 }
 
-type ExpoResponseBodyPost =
+type GuestResponseBodyPost =
   | {
       guest: Guest;
     }
@@ -33,7 +33,7 @@ type ExpoResponseBodyPost =
 
 export async function POST(
   request: Request,
-): Promise<ExpoApiResponse<ExpoResponseBodyPost>> {
+): Promise<ExpoApiResponse<GuestResponseBodyPost>> {
   const requestBody = await request.json();
 
   const newGuest = {

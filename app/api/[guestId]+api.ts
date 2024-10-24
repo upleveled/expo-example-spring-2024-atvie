@@ -2,11 +2,11 @@ import {
   deleteGuestInsecure,
   getGuestInsecure,
   updateGuestInsecure,
-} from '../database/guests';
-import { ExpoApiResponse } from '../ExpoApiResponse';
-import { Guest, guestsSchema } from '../migrations/00000-createTableGuests';
+} from '../../database/guests';
+import { ExpoApiResponse } from '../../ExpoApiResponse';
+import { Guest, guestsSchema } from '../../migrations/00000-createTableGuests';
 
-type ExpoResponseBodyGet =
+type GuestResponseBodyGet =
   | {
       guest: Guest;
     }
@@ -14,53 +14,30 @@ type ExpoResponseBodyGet =
 
 export async function GET(
   request: Request,
-  { id }: { id: string },
-): Promise<ExpoApiResponse<ExpoResponseBodyGet>> {
-  const guest = await getGuestInsecure(Number(id));
+  { guestId }: { guestId: string },
+): Promise<ExpoApiResponse<GuestResponseBodyGet>> {
+  const guest = await getGuestInsecure(Number(guestId));
 
   if (!guest) {
     return ExpoApiResponse.json(
-      { error: `No guest with id ${id} found` },
+      { error: `No guest with id ${guestId} found` },
       { status: 404 },
     );
   }
   return ExpoApiResponse.json({ guest: guest });
 }
 
-type ExpoResponseBodyDelete =
-  | {
-      guest: Guest;
-    }
-  | { error: string };
-
-export async function DELETE(
-  request: Request,
-  { id }: { id: string },
-): Promise<ExpoApiResponse<ExpoResponseBodyDelete>> {
-  const guest = await deleteGuestInsecure(Number(id));
-
-  if (!guest) {
-    return ExpoApiResponse.json(
-      { error: `Guest ${id} not found` },
-      { status: 404 },
-    );
-  }
-
-  return ExpoApiResponse.json({ guest: guest });
-}
-
-type ExpoResponseBodyPut =
+type GuestResponseBodyPut =
   | {
       guest: Guest;
     }
   | { error: string; errorIssues: { message: string }[] }
   | { error: string };
 
-// TODO: Implement Edit UI
 export async function PUT(
   request: Request,
-  { id }: { id: string },
-): Promise<ExpoApiResponse<ExpoResponseBodyPut>> {
+  { guestId }: { guestId: string },
+): Promise<ExpoApiResponse<GuestResponseBodyPut>> {
   const requestBody = await request.json();
 
   const result = guestsSchema.safeParse(requestBody);
@@ -76,7 +53,7 @@ export async function PUT(
   }
 
   const updatedGuest = await updateGuestInsecure({
-    id: Number(id),
+    id: Number(guestId),
     firstName: result.data.firstName,
     lastName: result.data.lastName,
     attending: result.data.attending,
@@ -84,10 +61,32 @@ export async function PUT(
 
   if (!updatedGuest) {
     return ExpoApiResponse.json(
-      { error: `Guest ${id} not found` },
+      { error: `Guest ${guestId} not found` },
       { status: 404 },
     );
   }
 
   return ExpoApiResponse.json({ guest: updatedGuest });
+}
+
+type GuestResponseBodyDelete =
+  | {
+      guest: Guest;
+    }
+  | { error: string };
+
+export async function DELETE(
+  request: Request,
+  { guestId }: { guestId: string },
+): Promise<ExpoApiResponse<GuestResponseBodyDelete>> {
+  const guest = await deleteGuestInsecure(Number(guestId));
+
+  if (!guest) {
+    return ExpoApiResponse.json(
+      { error: `Guest ${guestId} not found` },
+      { status: 404 },
+    );
+  }
+
+  return ExpoApiResponse.json({ guest: guest });
 }
