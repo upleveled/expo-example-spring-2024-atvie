@@ -3,7 +3,7 @@ import { Image } from 'expo-image';
 import { router } from 'expo-router';
 import { StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native';
 import { colors } from '../constants/colors';
-import { Guest } from '../migrations/00000-createTableGuests';
+import type { Guest } from '../migrations/00000-createTableGuests';
 
 const styles = StyleSheet.create({
   container: {
