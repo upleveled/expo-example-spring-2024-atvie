@@ -6,17 +6,65 @@ jobs:
     name: Type Checking, Linting
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    # TODO: Update environment variables with your own database credentials
+    env:
+      PGHOST: localhost
+      PGDATABASE: expo_example_spring_2024
+      PGUSERNAME: expo_example_spring_2024
+      PGPASSWORD: expo_example_spring_2024
     steps:
+      - name: Start preinstalled PostgreSQL on Ubuntu
+        run: |
+          sudo systemctl start postgresql.service
+          pg_isready
+      - name: Create database user
+        run: |
+          sudo -u postgres psql --command="CREATE USER $PGUSERNAME PASSWORD '$PGPASSWORD'" --command="\du"
+      - name: Create database and allow user
+        run: |
+          sudo -u postgres createdb --owner=$PGUSERNAME $PGDATABASE
+
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
+
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 'lts/*'
           cache: 'pnpm'
+
       - name: Install dependencies
         run: pnpm install
+
+      - name: Run database migrations
+        run: pnpm migrate up
+
+      - name: Start Metro to generate typedRoutes TS types
+        run: |
+          echo "Starting Expo project..."
+
+          pnpm expo start > expo.log 2>&1 &
+          expo_pid=$!
+
+          for i in {1..10}; do
+            if grep -q "Logs for your project will appear below." expo.log; then
+              echo "Expo server started successfully"
+              break
+            fi
+            echo "Waiting for Expo server to start... ($i/10)"
+            sleep 1
+          done
+
+          if ! grep -q "Logs for your project will appear below." expo.log; then
+            echo "Expo server failed to start in time"
+            kill $expo_pid
+            exit 1
+          fi
+
+          kill $expo_pid
+
       - name: Check TypeScript Types
         run: pnpm tsc
+
       - name: Lint with ESLint
         run: pnpm eslint . --max-warnings 0
