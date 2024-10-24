@@ -1,6 +1,6 @@
 import { Ionicons } from '@expo/vector-icons';
 import { Image } from 'expo-image';
-import { Link, router } from 'expo-router';
+import { Link } from 'expo-router';
 import {
   Pressable,
   StyleSheet,
@@ -62,9 +62,10 @@ const styles = StyleSheet.create({
 
 type Props = {
   guest: Guest;
+  setIsStale: (isStale: boolean) => void;
 };
 
-export default function GuestItem({ guest }: Props) {
+export default function GuestItem({ guest, setIsStale }: Props) {
   const { id, firstName, lastName, attending } = guest;
 
   return (
@@ -108,7 +109,7 @@ export default function GuestItem({ guest }: Props) {
                   }),
                 });
 
-                router.replace('/');
+                setIsStale(true);
               }}
               trackColor={{ false: colors.textSecondary, true: colors.switch }}
               thumbColor={colors.text}
@@ -120,7 +121,7 @@ export default function GuestItem({ guest }: Props) {
                   method: 'DELETE',
                 });
 
-                router.replace('/');
+                setIsStale(true);
               }}
             >
               <Ionicons

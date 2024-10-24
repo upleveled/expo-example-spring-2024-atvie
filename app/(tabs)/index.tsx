@@ -24,13 +24,18 @@ export default function App() {
   const [fontsLoaded] = useFonts({
     Poppins_400Regular,
   });
+  const [isStale, setIsStale] = useState(true);
 
   // const renderItem = (item: { item: Guest }) => <UserItem user={item.item} />;
 
-  const renderItem = (item: { item: Guest }) => <GuestItem guest={item.item} />;
+  const renderItem = (item: { item: Guest }) => (
+    <GuestItem guest={item.item} setIsStale={setIsStale} />
+  );
 
   useFocusEffect(
     useCallback(() => {
+      if (!isStale) return;
+
       const getGuests = async () => {
         try {
           const response = await fetch('/api/guests', {
@@ -38,16 +43,17 @@ export default function App() {
               Cookie: 'name=value',
             },
           });
-          const body: { guests: Guest[] } = await response.json();
+          const body = await response.json();
 
           setGuests(body.guests);
+          setIsStale(false);
         } catch (error) {
           console.error('Error fetching guests', error);
         }
       };
 
       getGuests().catch(() => {});
-    }, []),
+    }, [isStale]),
   );
 
   if (!fontsLoaded) {
