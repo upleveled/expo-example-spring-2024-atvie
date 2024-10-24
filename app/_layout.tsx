@@ -1,51 +1,58 @@
-import { Pacifico_400Regular, useFonts } from '@expo-google-fonts/pacifico';
-import { Slot, usePathname } from 'expo-router';
+import {
+  Poppins_400Regular,
+  Poppins_700Bold,
+  useFonts,
+} from '@expo-google-fonts/poppins';
+import Constants from 'expo-constants';
+import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, View } from 'react-native';
-import Header from '../components/Header';
+import { Platform, SafeAreaView, StyleSheet, View } from 'react-native';
 import { colors } from '../constants/colors';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.background,
-    paddingBottom: 40,
   },
-  slot: {
+  view: {
     flex: 1,
-    paddingLeft: 30,
-    paddingRight: 30,
+    paddingLeft: 10,
+    paddingRight: 10,
+    paddingTop: Platform.OS === 'ios' ? 0 : Constants.statusBarHeight + 20,
+    paddingBottom: 20,
   },
 });
 
-function routeMapping(pathname: string) {
-  switch (pathname) {
-    case '/':
-      return 'Guest List';
-    case '/add-guest':
-      return 'Add Guest';
-    default:
-      return '';
-  }
-}
-
 export default function HomeLayout() {
-  const pathname = usePathname();
-  const label = routeMapping(pathname);
   const [fontsLoaded] = useFonts({
-    Pacifico_400Regular,
+    Poppins_700Bold,
+    Poppins_400Regular,
   });
 
   if (!fontsLoaded) {
     return null;
   }
+
   return (
-    <View style={styles.container}>
-      <Header label={label} />
-      <StatusBar style="auto" />
-      <View style={styles.slot}>
-        <Slot />
+    <SafeAreaView style={styles.container}>
+      <StatusBar style="light" />
+      <View style={styles.view}>
+        <Stack>
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen
+            name="guests/[guestId]"
+            options={{
+              presentation: 'modal',
+              title: '',
+              animation: 'slide_from_bottom',
+              headerTintColor: colors.text,
+              headerStyle: {
+                backgroundColor: colors.background,
+              },
+            }}
+          />
+        </Stack>
       </View>
-    </View>
+    </SafeAreaView>
   );
 }
