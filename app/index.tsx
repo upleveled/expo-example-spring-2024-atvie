@@ -4,7 +4,6 @@ import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import GuestItem from '../components/GuestItem';
-import UserItem from '../components/UserItem';
 import { colors } from '../constants/colors';
 import { Guest } from '../migrations/00000-createTableGuests';
 
