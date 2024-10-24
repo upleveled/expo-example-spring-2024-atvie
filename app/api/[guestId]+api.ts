@@ -10,13 +10,13 @@ type ExpoResponseBodyGet =
 
 export async function GET(
   request: Request,
-  { id }: { id: string },
+  { guestId }: { guestId: string },
 ): Promise<ExpoApiResponse<ExpoResponseBodyGet>> {
-  const guest = await getGuestInsecure(Number(id));
+  const guest = await getGuestInsecure(Number(guestId));
 
   if (!guest) {
     return ExpoApiResponse.json(
-      { error: `No guest with id ${id} found` },
+      { error: `No guest with id ${guestId} found` },
       { status: 404 },
     );
   }
@@ -31,13 +31,13 @@ type ExpoResponseBodyDelete =
 
 export async function DELETE(
   request: Request,
-  { id }: { id: string },
+  { guestId }: { guestId: string },
 ): Promise<ExpoApiResponse<ExpoResponseBodyDelete>> {
-  const guest = await deleteGuestInsecure(Number(id));
+  const guest = await deleteGuestInsecure(Number(guestId));
 
   if (!guest) {
     return ExpoApiResponse.json(
-      { error: `Guest ${id} not found` },
+      { error: `Guest ${guestId} not found` },
       { status: 404 },
     );
   }
@@ -55,7 +55,7 @@ type ExpoResponseBodyPut =
 // TODO: Implement Edit UI
 export async function PUT(
   request: Request,
-  { id }: { id: string },
+  { guestId }: { guestId: string },
 ): Promise<ExpoApiResponse<ExpoResponseBodyPut>> {
   const requestBody = await request.json();
 
@@ -73,11 +73,11 @@ export async function PUT(
     );
   }
 
-  const guest = await getGuestInsecure(Number(id));
+  const guest = await getGuestInsecure(Number(guestId));
 
   if (!guest) {
     return ExpoApiResponse.json(
-      { error: `Guest ${id} not found` },
+      { error: `Guest ${guestId} not found` },
       { status: 404 },
     );
   }
