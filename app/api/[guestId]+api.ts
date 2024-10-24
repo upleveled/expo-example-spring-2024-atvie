@@ -9,7 +9,13 @@ import {
   guestsSchema,
 } from '../../migrations/00000-createTableGuests';
 
-type GuestResponseBodyGet = { guest: Guest } | { error: string };
+type GuestResponseBodyGet =
+  | {
+      guest: Guest;
+    }
+  | {
+      error: string;
+    };
 
 export async function GET(
   request: Request,
@@ -19,16 +25,25 @@ export async function GET(
 
   if (!guest) {
     return ExpoApiResponse.json(
-      { error: `No guest with id ${guestId} found` },
-      { status: 404 },
+      {
+        error: `No guest with id ${guestId} found`,
+      },
+      {
+        status: 404,
+      },
     );
   }
   return ExpoApiResponse.json({ guest: guest });
 }
 
 type GuestResponseBodyPut =
-  | { guest: Guest }
-  | { error: string; errorIssues?: { message: string }[] };
+  | {
+      guest: Guest;
+    }
+  | {
+      error: string;
+      errorIssues?: { message: string }[];
+    };
 
 export async function PUT(
   request: Request,
@@ -44,7 +59,9 @@ export async function PUT(
         error: 'Request does not contain guest object',
         errorIssues: result.error.issues,
       },
-      { status: 400 },
+      {
+        status: 400,
+      },
     );
   }
 
@@ -57,15 +74,25 @@ export async function PUT(
 
   if (!updatedGuest) {
     return ExpoApiResponse.json(
-      { error: `Guest ${guestId} not found` },
-      { status: 404 },
+      {
+        error: `Guest ${guestId} not found`,
+      },
+      {
+        status: 404,
+      },
     );
   }
 
   return ExpoApiResponse.json({ guest: updatedGuest });
 }
 
-type GuestResponseBodyDelete = { guest: Guest } | { error: string };
+type GuestResponseBodyDelete =
+  | {
+      guest: Guest;
+    }
+  | {
+      error: string;
+    };
 
 export async function DELETE(
   request: Request,
@@ -75,8 +102,12 @@ export async function DELETE(
 
   if (!guest) {
     return ExpoApiResponse.json(
-      { error: `Guest ${guestId} not found` },
-      { status: 404 },
+      {
+        error: `Guest ${guestId} not found`,
+      },
+      {
+        status: 404,
+      },
     );
   }
 

@@ -6,8 +6,13 @@ import {
 } from '../../migrations/00000-createTableGuests';
 
 type GuestResponseBodyPost =
-  | { guest: Guest }
-  | { error: string; errorIssues?: { message: string }[] };
+  | {
+      guest: Guest;
+    }
+  | {
+      error: string;
+      errorIssues?: { message: string }[];
+    };
 
 export async function POST(
   request: Request,
@@ -38,7 +43,9 @@ export async function POST(
 
   if (!guest) {
     return ExpoApiResponse.json(
-      { error: 'Guest not created' },
+      {
+        error: 'Guest not created',
+      },
       {
         status: 500,
       },
@@ -48,7 +55,9 @@ export async function POST(
   return ExpoApiResponse.json({ guest: guest });
 }
 
-type GuestResponseBodyGet = { guests: Guest[] };
+type GuestResponseBodyGet = {
+  guests: Guest[];
+};
 
 export async function GET(
   request: Request,
@@ -59,7 +68,9 @@ export async function GET(
   const guests = await getGuestsInsecure();
 
   return ExpoApiResponse.json(
-    { guests: guests },
+    {
+      guests: guests,
+    },
     {
       headers: {
         'Set-Cookie': 'test=123',
