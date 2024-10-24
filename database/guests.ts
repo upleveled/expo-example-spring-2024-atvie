@@ -31,14 +31,14 @@ export const getGuestsInsecure = async () => {
   return guests;
 };
 
-export const getGuestInsecure = async (id: number) => {
+export const getGuestInsecure = async (guestId: Guest['id']) => {
   const [guest] = await sql<Guest[]>`
     SELECT
       *
     FROM
       guests
     WHERE
-      id = ${id}
+      id = ${guestId}
   `;
   return guest;
 };
