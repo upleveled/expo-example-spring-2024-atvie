@@ -2,28 +2,17 @@ import { StyleSheet, Text, View } from 'react-native';
 import { colors } from '../constants/colors';
 
 const styles = StyleSheet.create({
-  center: {
+  text: {
     textAlign: 'center',
+    color: colors.text,
+    fontFamily: 'Poppins_400Regular',
   },
   card: {
     backgroundColor: colors.cardBackground,
     paddingTop: 10,
-    paddingLeft: 30,
-    paddingRight: 30,
     paddingBottom: 10,
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
     borderRadius: 30,
     marginBottom: 30,
-    borderColor: colors.cardShadow,
-    borderWidth: 0.5,
-    borderTopWidth: 0,
-    borderLeftWidth: 0,
-    borderBottomRightRadius: 30,
-    borderBottomLeftRadius: 30,
-    borderTopRightRadius: 30,
-    textAlign: 'left',
   },
 });
 
@@ -39,7 +28,7 @@ export default function UserItem({ user }: Props) {
 
   return (
     <View style={styles.card}>
-      <Text style={styles.center}>
+      <Text style={styles.text}>
         {firstName} {lastName}
       </Text>
     </View>

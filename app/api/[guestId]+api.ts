@@ -31,8 +31,7 @@ type GuestResponseBodyPut =
   | {
       guest: Guest;
     }
-  | { error: string; errorIssues: { message: string }[] }
-  | { error: string };
+  | { error: string; errorIssues?: { message: string }[] };
 
 export async function PUT(
   request: Request,

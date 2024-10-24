@@ -43,17 +43,6 @@ export const getGuestInsecure = async (id: number) => {
   return guest;
 };
 
-export const deleteGuestInsecure = async (id: number) => {
-  const [guest] = await sql<Guest[]>`
-    DELETE FROM guests
-    WHERE
-      id = ${id}
-    RETURNING
-      guests.*
-  `;
-  return guest;
-};
-
 export const updateGuestInsecure = async (updatedGuest: Guest) => {
   const [guest] = await sql<Guest[]>`
     UPDATE guests
@@ -63,6 +52,17 @@ export const updateGuestInsecure = async (updatedGuest: Guest) => {
       attending = ${updatedGuest.attending}
     WHERE
       id = ${updatedGuest.id}
+    RETURNING
+      guests.*
+  `;
+  return guest;
+};
+
+export const deleteGuestInsecure = async (id: number) => {
+  const [guest] = await sql<Guest[]>`
+    DELETE FROM guests
+    WHERE
+      id = ${id}
     RETURNING
       guests.*
   `;

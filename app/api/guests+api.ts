@@ -6,8 +6,7 @@ type GuestResponseBodyPost =
   | {
       guest: Guest;
     }
-  | { error: string; errorIssues: { message: string }[] }
-  | { error: string };
+  | { error: string; errorIssues?: { message: string }[] };
 
 export async function POST(
   request: Request,
@@ -31,7 +30,7 @@ export async function POST(
   const newGuest = {
     firstName: result.data.firstName,
     lastName: result.data.lastName,
-    attending: false,
+    attending: result.data.attending,
   };
 
   const guest = await createGuestInsecure(newGuest);
