@@ -11,6 +11,7 @@ import {
   View,
 } from 'react-native';
 import { colors } from '../../constants/colors';
+import type { Guest } from '../../migrations/00000-createTableGuests';
 
 const styles = StyleSheet.create({
   container: {
@@ -123,10 +124,11 @@ export default function GuestPage() {
           return;
         }
         const response = await fetch(`/api/${guestId}`);
-        const fetchedGuest = await response.json();
-        setFirstName(fetchedGuest.guest.firstName);
-        setLastName(fetchedGuest.guest.lastName);
-        setAttending(fetchedGuest.guest.attending);
+        const body: { guest: Guest } = await response.json();
+
+        setFirstName(body.guest.firstName);
+        setLastName(body.guest.lastName);
+        setAttending(body.guest.attending);
       } catch (error) {
         console.error('Error fetching guest', error);
       }
@@ -200,6 +202,7 @@ export default function GuestPage() {
                   attending,
                 }),
               });
+
               setEdit(false);
               router.replace('/');
             }}
@@ -229,8 +232,8 @@ export default function GuestPage() {
                   }),
                 });
                 setEdit(false);
-                const data = await response.json();
-                setAttending(data.guest.attending);
+                const body: { guest: Guest } = await response.json();
+                setAttending(body.guest.attending);
                 router.replace('/');
               }}
             />

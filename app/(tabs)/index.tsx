@@ -37,9 +37,9 @@ export default function App() {
           Cookie: 'name=value',
         },
       });
-      const data = await response.json();
+      const body: { guests: Guest[] } = await response.json();
 
-      setGuests(data.guests);
+      setGuests(body.guests);
     }
 
     getGuests().catch((error) => {
