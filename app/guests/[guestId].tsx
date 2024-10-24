@@ -1,7 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import { Image } from 'expo-image';
-import { router, useLocalSearchParams } from 'expo-router';
-import { useEffect, useState } from 'react';
+import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
+import { useCallback, useState } from 'react';
 import {
   Pressable,
   StyleSheet,
@@ -118,28 +118,29 @@ export default function GuestPage() {
   // Dynamic import of images
   // const imageContext = require.context('../../assets', false, /\.(avif)$/);
 
-  useEffect(() => {
-    async function loadGuest() {
-      try {
-        if (typeof guestId !== 'string') {
-          return;
+  useFocusEffect(
+    useCallback(() => {
+      const loadGuest = async () => {
+        try {
+          if (typeof guestId !== 'string') {
+            return;
+          }
+
+          const response = await fetch(`/api/${guestId}`);
+          const body: { guest: Guest } = await response.json();
+
+          // Directly set state without the isActive flag
+          setFirstName(body.guest.firstName);
+          setLastName(body.guest.lastName);
+          setAttending(body.guest.attending);
+        } catch (error) {
+          console.error('Error fetching guest', error);
         }
-        const response = await fetch(`/api/${guestId}`);
-        const body: { guest: Guest } = await response.json();
+      };
 
-        setFirstName(body.guest.firstName);
-        setLastName(body.guest.lastName);
-        setAttending(body.guest.attending);
-      } catch (error) {
-        console.error('Error fetching guest', error);
-      }
-    }
-    loadGuest().catch(console.error);
-  }, [guestId]);
-
-  if (!firstName || !lastName || typeof attending !== 'boolean') {
-    return null;
-  }
+      loadGuest().catch(() => {});
+    }, [guestId]), // Ensure the effect runs again when `guestId` changes
+  );
 
   if (typeof guestId !== 'string') {
     return null;

@@ -1,6 +1,6 @@
 import { Ionicons } from '@expo/vector-icons';
 import { Image } from 'expo-image';
-import { Link } from 'expo-router';
+import { Link, router } from 'expo-router';
 import {
   Pressable,
   StyleSheet,
@@ -62,11 +62,9 @@ const styles = StyleSheet.create({
 
 type Props = {
   guest: Guest;
-  guests: Guest[];
-  setGuests: (guests: Guest[]) => void;
 };
 
-export default function GuestItem({ guest, guests, setGuests }: Props) {
+export default function GuestItem({ guest }: Props) {
   const { id, firstName, lastName, attending } = guest;
 
   return (
@@ -101,7 +99,7 @@ export default function GuestItem({ guest, guests, setGuests }: Props) {
             <Switch
               value={attending}
               onValueChange={async () => {
-                const response = await fetch(`/api/${id}`, {
+                await fetch(`/api/${id}`, {
                   method: 'PUT',
                   body: JSON.stringify({
                     firstName,
@@ -110,13 +108,7 @@ export default function GuestItem({ guest, guests, setGuests }: Props) {
                   }),
                 });
 
-                if (response.ok) {
-                  setGuests(
-                    guests.map((g) =>
-                      g.id === id ? { ...g, attending: !attending } : g,
-                    ),
-                  );
-                }
+                router.replace('/');
               }}
               trackColor={{ false: colors.textSecondary, true: colors.switch }}
               thumbColor={colors.text}
@@ -124,13 +116,11 @@ export default function GuestItem({ guest, guests, setGuests }: Props) {
             <TouchableOpacity
               style={styles.button}
               onPress={async () => {
-                const response = await fetch(`/api/${id}`, {
+                await fetch(`/api/${id}`, {
                   method: 'DELETE',
                 });
 
-                if (response.ok) {
-                  setGuests(guests.filter((g: Guest) => g.id !== id));
-                }
+                router.replace('/');
               }}
             >
               <Ionicons
