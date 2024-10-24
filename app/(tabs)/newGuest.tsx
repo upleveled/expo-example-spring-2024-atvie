@@ -106,13 +106,9 @@ export default function NewGuest() {
 
           if (!response.ok) {
             let errorMessage = 'Error creating guest';
-            try {
-              const body: { error: string } = await response.json();
-              if (body.error) {
-                errorMessage = body.error;
-              }
-            } catch (error) {
-              console.error(error);
+            const body: { error: string } = await response.json();
+            if (body.error) {
+              errorMessage = body.error;
             }
 
             Alert.alert('Error', errorMessage, [{ text: 'OK' }]);
