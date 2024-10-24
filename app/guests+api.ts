@@ -38,8 +38,6 @@ export async function POST(
 
   const result = guestsSchema.safeParse(requestBody);
 
-  console.log(result);
-
   if (!result.success) {
     return ExpoApiResponse.json(
       {
