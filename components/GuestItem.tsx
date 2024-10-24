@@ -14,10 +14,6 @@ import { colors } from '../constants/colors';
 import type { Guest } from '../migrations/00000-createTableGuests';
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.background,
-  },
   card: {
     backgroundColor: colors.cardBackground,
     borderRadius: 12,
