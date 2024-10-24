@@ -2,6 +2,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { Image } from 'expo-image';
 import { router } from 'expo-router';
 import { StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native';
+import placeholder from '../assets/candidate-default.avif';
 import { colors } from '../constants/colors';
 import type { Guest } from '../migrations/00000-createTableGuests';
 
@@ -81,7 +82,7 @@ export default function GuestItem({ guest, guests, setGuests }: Props) {
             source={{
               uri: `https://res.cloudinary.com/trueque-image/image/upload/v1713269496/guest-${id}.webp`,
             }}
-            placeholder={require('../assets/candidate-default.avif')}
+            placeholder={placeholder}
             placeholderContentFit="cover"
           />
         </View>

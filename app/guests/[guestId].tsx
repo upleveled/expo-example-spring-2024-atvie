@@ -10,6 +10,7 @@ import {
   TextInput,
   View,
 } from 'react-native';
+import placeholder from '../../assets/candidate-default.avif';
 import { colors } from '../../constants/colors';
 import type { Guest } from '../../migrations/00000-createTableGuests';
 
@@ -158,7 +159,7 @@ export default function GuestPage() {
           source={{
             uri: `https://res.cloudinary.com/trueque-image/image/upload/v1713269496/guest-${guestId}.webp`,
           }}
-          placeholder={require('../../assets/candidate-default.avif')}
+          placeholder={placeholder}
           placeholderContentFit="cover"
         />
       </View>
