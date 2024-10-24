@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
 });
 
 export default function GuestPage() {
-  const { id } = useLocalSearchParams();
+  const { guestId } = useLocalSearchParams();
 
   const [guest, setGuest] = useState<Guest>();
 
@@ -70,10 +70,10 @@ export default function GuestPage() {
   useEffect(() => {
     async function loadGuest() {
       try {
-        if (typeof id !== 'string') {
+        if (typeof guestId !== 'string') {
           return;
         }
-        const response = await fetch(`/${id}`);
+        const response = await fetch(`/${guestId}`);
         const fetchedGuest = await response.json();
         setGuest(fetchedGuest.guest);
       } catch (error) {
@@ -81,13 +81,13 @@ export default function GuestPage() {
       }
     }
     loadGuest().catch(console.error);
-  }, [id]);
+  }, [guestId]);
 
   if (!guest) {
     return null;
   }
 
-  if (typeof id !== 'string') {
+  if (typeof guestId !== 'string') {
     return null;
   }
   return (
@@ -96,13 +96,13 @@ export default function GuestPage() {
         {/* Use dynamic import of images
         <Image
           style={styles.avatar}
-          source={imageContext(`./guest-${id}.avif`)}
+          source={imageContext(`./guest-${guestId}.avif`)}
           alt="profile picture"
         /> */}
         <Image
           style={styles.avatarImage}
           source={{
-            uri: `https://res.cloudinary.com/trueque-image/image/upload/v1713269496/guest-${id}.webp`,
+            uri: `https://res.cloudinary.com/trueque-image/image/upload/v1713269496/guest-${guestId}.webp`,
           }}
           placeholder={require('../../assets/candidate-default.avif')}
           placeholderContentFit="cover"
@@ -125,7 +125,7 @@ export default function GuestPage() {
         <Pressable
           style={styles.button}
           onPress={async () => {
-            await fetch(`/${id}`, {
+            await fetch(`/${guestId}`, {
               method: 'DELETE',
             });
             router.replace('/');

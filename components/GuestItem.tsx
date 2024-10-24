@@ -71,13 +71,13 @@ export default function GuestItem({ guest }: Props) {
   const openGuest = () => {
     router.push({
       pathname: `/guests/[guestId]`,
-      params: { id },
+      params: { guestId: id },
     });
   };
 
   return (
     <TouchableOpacity style={styles.container} onPress={openGuest}>
-      <View key={`user-${id}`} style={styles.card}>
+      <View style={styles.card}>
         <View style={styles.avatar}>
           <Image
             style={styles.avatarImage}
