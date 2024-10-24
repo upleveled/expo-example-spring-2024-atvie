@@ -129,7 +129,6 @@ export default function GuestPage() {
           const response = await fetch(`/api/${guestId}`);
           const body: { guest: Guest } = await response.json();
 
-          // Directly set state without the isActive flag
           setFirstName(body.guest.firstName);
           setLastName(body.guest.lastName);
           setAttending(body.guest.attending);
@@ -139,7 +138,7 @@ export default function GuestPage() {
       };
 
       loadGuest().catch(() => {});
-    }, [guestId]), // Ensure the effect runs again when `guestId` changes
+    }, [guestId]),
   );
 
   if (typeof guestId !== 'string') {
@@ -225,7 +224,7 @@ export default function GuestPage() {
             <Switch
               value={attending}
               onValueChange={async () => {
-                const response = await fetch(`/api/${guestId}`, {
+                await fetch(`/api/${guestId}`, {
                   method: 'PUT',
                   body: JSON.stringify({
                     firstName: firstName,
@@ -234,8 +233,6 @@ export default function GuestPage() {
                   }),
                 });
                 setEdit(false);
-                const body: { guest: Guest } = await response.json();
-                setAttending(body.guest.attending);
                 router.replace('/');
               }}
             />
@@ -255,6 +252,7 @@ export default function GuestPage() {
                 await fetch(`/api/${guestId}`, {
                   method: 'DELETE',
                 });
+                setEdit(false);
                 router.replace('/');
               }}
             >

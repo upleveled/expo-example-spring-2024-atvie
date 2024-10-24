@@ -5,7 +5,31 @@ import {
   guestsSchema,
 } from '../../migrations/00000-createTableGuests';
 
-type GuestResponseBodyPost =
+export type GuestsResponseBodyGet = {
+  guests: Guest[];
+};
+
+export async function GET(
+  request: Request,
+): Promise<ExpoApiResponse<GuestsResponseBodyGet>> {
+  const cookie = request.headers.get('cookie');
+  console.log('cookie', cookie);
+
+  const guests = await getGuestsInsecure();
+
+  return ExpoApiResponse.json(
+    {
+      guests: guests,
+    },
+    {
+      headers: {
+        'Set-Cookie': 'test=123',
+      },
+    },
+  );
+}
+
+export type GuestsResponseBodyPost =
   | {
       guest: Guest;
     }
@@ -16,7 +40,7 @@ type GuestResponseBodyPost =
 
 export async function POST(
   request: Request,
-): Promise<ExpoApiResponse<GuestResponseBodyPost>> {
+): Promise<ExpoApiResponse<GuestsResponseBodyPost>> {
   const requestBody = await request.json();
 
   const result = guestsSchema.safeParse(requestBody);
@@ -53,28 +77,4 @@ export async function POST(
   }
 
   return ExpoApiResponse.json({ guest: guest });
-}
-
-type GuestResponseBodyGet = {
-  guests: Guest[];
-};
-
-export async function GET(
-  request: Request,
-): Promise<ExpoApiResponse<GuestResponseBodyGet>> {
-  const cookie = request.headers.get('cookie');
-  console.log('cookie', cookie);
-
-  const guests = await getGuestsInsecure();
-
-  return ExpoApiResponse.json(
-    {
-      guests: guests,
-    },
-    {
-      headers: {
-        'Set-Cookie': 'test=123',
-      },
-    },
-  );
 }

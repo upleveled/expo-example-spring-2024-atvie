@@ -9,7 +9,7 @@ import {
   guestsSchema,
 } from '../../migrations/00000-createTableGuests';
 
-type GuestResponseBodyGet =
+export type GuestResponseBodyGet =
   | {
       guest: Guest;
     }
@@ -36,7 +36,7 @@ export async function GET(
   return ExpoApiResponse.json({ guest: guest });
 }
 
-type GuestResponseBodyPut =
+export type GuestResponseBodyPut =
   | {
       guest: Guest;
     }
@@ -86,7 +86,7 @@ export async function PUT(
   return ExpoApiResponse.json({ guest: updatedGuest });
 }
 
-type GuestResponseBodyDelete =
+export type GuestResponseBodyDelete =
   | {
       guest: Guest;
     }

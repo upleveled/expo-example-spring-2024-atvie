@@ -5,6 +5,7 @@ import { FlatList, SafeAreaView, StyleSheet } from 'react-native';
 import GuestItem from '../../components/GuestItem';
 import { colors } from '../../constants/colors';
 import type { Guest } from '../../migrations/00000-createTableGuests';
+import type { GuestsResponseBodyGet } from '../api/guests+api';
 
 const styles = StyleSheet.create({
   container: {
@@ -43,7 +44,7 @@ export default function App() {
               Cookie: 'name=value',
             },
           });
-          const body = await response.json();
+          const body: GuestsResponseBodyGet = await response.json();
 
           setGuests(body.guests);
           setIsStale(false);
