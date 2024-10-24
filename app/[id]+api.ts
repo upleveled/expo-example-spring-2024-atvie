@@ -1,4 +1,4 @@
-import { deleteGuest, getGuest, Guest } from '../database/guests';
+import { deleteGuest, getGuest, type Guest } from '../database/guests';
 
 export function GET(request: Request, { id }: { id: string }) {
   const guest = getGuest(Number(id));

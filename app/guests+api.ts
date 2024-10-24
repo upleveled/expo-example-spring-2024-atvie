@@ -1,4 +1,4 @@
-import { addGuest, getGuests, Guest } from '../database/guests';
+import { addGuest, getGuests, type Guest } from '../database/guests';
 
 export function GET(request: Request): Response {
   const cookie = request.headers.get('cookie');
