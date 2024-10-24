@@ -24,12 +24,12 @@ const styles = StyleSheet.create({
 });
 
 export default function HomeLayout() {
-  const [loaded] = useFonts({
+  const [fontsLoaded] = useFonts({
     Poppins_700Bold,
     Poppins_400Regular,
   });
 
-  if (!loaded) {
+  if (!fontsLoaded) {
     return null;
   }
 
