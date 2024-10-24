@@ -2,7 +2,7 @@ import { deleteGuestInsecure, getGuestInsecure } from '../../database/guests';
 import { ExpoApiResponse } from '../../ExpoApiResponse';
 import { Guest, guestsSchema } from '../../migrations/00000-createTableGuests';
 
-type ExpoResponseBodyGet =
+type GuestResponseBodyGet =
   | {
       guest: Guest;
     }
@@ -11,7 +11,7 @@ type ExpoResponseBodyGet =
 export async function GET(
   request: Request,
   { guestId }: { guestId: string },
-): Promise<ExpoApiResponse<ExpoResponseBodyGet>> {
+): Promise<ExpoApiResponse<GuestResponseBodyGet>> {
   const guest = await getGuestInsecure(Number(guestId));
 
   if (!guest) {
@@ -23,40 +23,17 @@ export async function GET(
   return ExpoApiResponse.json({ guest: guest });
 }
 
-type ExpoResponseBodyDelete =
-  | {
-      guest: Guest;
-    }
-  | { error: string };
-
-export async function DELETE(
-  request: Request,
-  { guestId }: { guestId: string },
-): Promise<ExpoApiResponse<ExpoResponseBodyDelete>> {
-  const guest = await deleteGuestInsecure(Number(guestId));
-
-  if (!guest) {
-    return ExpoApiResponse.json(
-      { error: `Guest ${guestId} not found` },
-      { status: 404 },
-    );
-  }
-
-  return ExpoApiResponse.json({ guest: guest });
-}
-
-type ExpoResponseBodyPut =
+type GuestResponseBodyPut =
   | {
       guest: Guest;
     }
   | { error: string; errorIssues: { message: string }[] }
   | { error: string };
 
-// TODO: Implement Edit UI
 export async function PUT(
   request: Request,
   { guestId }: { guestId: string },
-): Promise<ExpoApiResponse<ExpoResponseBodyPut>> {
+): Promise<ExpoApiResponse<GuestResponseBodyPut>> {
   const requestBody = await request.json();
 
   const result = guestsSchema.safeParse(requestBody);
@@ -74,6 +51,28 @@ export async function PUT(
   }
 
   const guest = await getGuestInsecure(Number(guestId));
+
+  if (!guest) {
+    return ExpoApiResponse.json(
+      { error: `Guest ${guestId} not found` },
+      { status: 404 },
+    );
+  }
+
+  return ExpoApiResponse.json({ guest: guest });
+}
+
+type GuestResponseBodyDelete =
+  | {
+      guest: Guest;
+    }
+  | { error: string };
+
+export async function DELETE(
+  request: Request,
+  { guestId }: { guestId: string },
+): Promise<ExpoApiResponse<GuestResponseBodyDelete>> {
+  const guest = await deleteGuestInsecure(Number(guestId));
 
   if (!guest) {
     return ExpoApiResponse.json(
