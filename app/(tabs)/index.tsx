@@ -18,15 +18,17 @@ const styles = StyleSheet.create({
   },
 });
 
-// const renderItem = (item: { item: Guest }) => <UserItem user={item.item} />;
-
-const renderItem = (item: { item: Guest }) => <GuestItem guest={item.item} />;
-
 export default function App() {
   const [guests, setGuests] = useState<Guest[]>([]);
   const [fontsLoaded] = useFonts({
     Poppins_400Regular,
   });
+
+  // const renderItem = (item: { item: Guest }) => <UserItem user={item.item} />;
+
+  const renderItem = (item: { item: Guest }) => (
+    <GuestItem guest={item.item} guests={guests} setGuests={setGuests} />
+  );
 
   useEffect(() => {
     async function getGuests() {

@@ -58,9 +58,11 @@ const styles = StyleSheet.create({
 
 type Props = {
   guest: Guest;
+  guests: Guest[];
+  setGuests: (guests: Guest[]) => void;
 };
 
-export default function GuestItem({ guest }: Props) {
+export default function GuestItem({ guest, guests, setGuests }: Props) {
   const { id, firstName, lastName, attending } = guest;
 
   const openGuest = () => {
@@ -95,7 +97,7 @@ export default function GuestItem({ guest }: Props) {
           <Switch
             value={attending}
             onValueChange={async () => {
-              await fetch(`/api/${id}`, {
+              const response = await fetch(`/api/${id}`, {
                 method: 'PUT',
                 body: JSON.stringify({
                   firstName,
@@ -103,6 +105,14 @@ export default function GuestItem({ guest }: Props) {
                   attending: !attending,
                 }),
               });
+
+              if (response.ok) {
+                setGuests(
+                  guests.map((g) =>
+                    g.id === id ? { ...g, attending: !attending } : g,
+                  ),
+                );
+              }
             }}
             trackColor={{ false: colors.textSecondary, true: colors.switch }}
             thumbColor={colors.text}
@@ -110,9 +120,13 @@ export default function GuestItem({ guest }: Props) {
           <TouchableOpacity
             style={styles.button}
             onPress={async () => {
-              await fetch(`/api/${id}`, {
+              const response = await fetch(`/api/${id}`, {
                 method: 'DELETE',
               });
+
+              if (response.ok) {
+                setGuests(guests.filter((g: Guest) => g.id !== id));
+              }
             }}
           >
             <Ionicons
