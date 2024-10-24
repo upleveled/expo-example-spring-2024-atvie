@@ -11,6 +11,7 @@ export type Guest = {
 export const guestsSchema = z.object({
   firstName: z.string().min(1).max(30),
   lastName: z.string().min(1).max(30),
+  attending: z.boolean(),
 });
 
 export async function up(sql: Sql) {

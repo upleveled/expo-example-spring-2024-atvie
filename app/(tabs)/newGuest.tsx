@@ -99,9 +99,9 @@ export default function NewGuest() {
       <Pressable
         style={({ pressed }) => [styles.button, { opacity: pressed ? 0.5 : 1 }]}
         onPress={async () => {
-          const response = await fetch('/guests', {
+          const response = await fetch('/api/guests', {
             method: 'POST',
-            body: JSON.stringify({ firstName, lastName }),
+            body: JSON.stringify({ firstName, lastName, attending: false }),
           });
 
           if (!response.ok) {

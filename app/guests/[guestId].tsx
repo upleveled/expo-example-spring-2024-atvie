@@ -2,9 +2,15 @@ import { Ionicons } from '@expo/vector-icons';
 import { Image } from 'expo-image';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { Pressable, StyleSheet, Switch, Text, View } from 'react-native';
+import {
+  Pressable,
+  StyleSheet,
+  Switch,
+  Text,
+  TextInput,
+  View,
+} from 'react-native';
 import { colors } from '../../constants/colors';
-import { Guest } from '../../migrations/00000-createTableGuests';
 
 const styles = StyleSheet.create({
   container: {
@@ -57,12 +63,30 @@ const styles = StyleSheet.create({
     color: colors.text,
     fontSize: 18,
   },
+  input: {
+    marginTop: 30,
+    paddingLeft: 30,
+    paddingRight: 30,
+    width: '100%',
+  },
+  edit: {
+    textAlign: 'right',
+  },
+  flex: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    width: '100%',
+  },
 });
 
 export default function GuestPage() {
   const { guestId } = useLocalSearchParams();
 
-  const [guest, setGuest] = useState<Guest>();
+  const [edit, setEdit] = useState<boolean>(false);
+  const [firstName, setFirstName] = useState<string>('');
+  const [lastName, setLastName] = useState<string>('');
+  const [attending, setAttending] = useState<boolean>(false);
 
   // Dynamic import of images
   // const imageContext = require.context('../../assets', false, /\.(avif)$/);
@@ -73,9 +97,11 @@ export default function GuestPage() {
         if (typeof guestId !== 'string') {
           return;
         }
-        const response = await fetch(`/${guestId}`);
+        const response = await fetch(`/api/${guestId}`);
         const fetchedGuest = await response.json();
-        setGuest(fetchedGuest.guest);
+        setFirstName(fetchedGuest.guest.firstName);
+        setLastName(fetchedGuest.guest.lastName);
+        setAttending(fetchedGuest.guest.attending);
       } catch (error) {
         console.error('Error fetching guest', error);
       }
@@ -83,13 +109,14 @@ export default function GuestPage() {
     loadGuest().catch(console.error);
   }, [guestId]);
 
-  if (!guest) {
+  if (!firstName || !lastName || typeof attending !== 'boolean') {
     return null;
   }
 
   if (typeof guestId !== 'string') {
     return null;
   }
+
   return (
     <View style={styles.container}>
       <View style={styles.avatar}>
@@ -108,32 +135,73 @@ export default function GuestPage() {
           placeholderContentFit="cover"
         />
       </View>
-      <View style={styles.main}>
-        <Text style={styles.text} numberOfLines={1} ellipsizeMode="tail">
-          {guest.firstName} {guest.lastName}
-        </Text>
+      {edit ? (
+        <View style={styles.flex}>
+          <TextInput
+            style={styles.input}
+            value={firstName}
+            onChangeText={setFirstName}
+            placeholder="First Name"
+          />
+          <TextInput
+            style={styles.input}
+            value={lastName}
+            onChangeText={setLastName}
+            placeholder="Last Name"
+          />
+          <Switch value={attending} onValueChange={setAttending} />
+          <Pressable
+            style={styles.button}
+            onPress={async () => {
+              await fetch(`/api/${guestId}`, {
+                method: 'PUT',
+                body: JSON.stringify({
+                  firstName,
+                  lastName,
+                  attending,
+                }),
+              });
+              setEdit(false);
+            }}
+          >
+            <Text style={styles.buttonText}>Save</Text>
+          </Pressable>
+        </View>
+      ) : (
+        <>
+          <View style={styles.main}>
+            <Text style={styles.text} numberOfLines={1} ellipsizeMode="tail">
+              {firstName} {lastName}
+            </Text>
 
-        <Text style={styles.textSecondary}>
-          {guest.attending ? 'Attending' : 'Not attending'}
-        </Text>
-        <Switch value={true} onValueChange={() => {}} />
-      </View>
-      <View style={styles.buttonRow}>
-        <Pressable style={styles.button} onPress={() => {}}>
-          <Ionicons name="create-outline" size={36} color={colors.text} />
-        </Pressable>
-        <Pressable
-          style={styles.button}
-          onPress={async () => {
-            await fetch(`/${guestId}`, {
-              method: 'DELETE',
-            });
-            router.replace('/');
-          }}
-        >
-          <Ionicons name="trash-outline" size={36} color={colors.text} />
-        </Pressable>
-      </View>
+            <Text style={styles.textSecondary}>
+              {attending ? 'Attending' : 'Not attending'}
+            </Text>
+            <Switch value={attending} onValueChange={() => {}} />
+          </View>
+          <View style={styles.buttonRow}>
+            <Pressable
+              style={styles.button}
+              onPress={() => {
+                setEdit(true);
+              }}
+            >
+              <Ionicons name="create-outline" size={36} color={colors.text} />
+            </Pressable>
+            <Pressable
+              style={styles.button}
+              onPress={async () => {
+                await fetch(`/api/${guestId}`, {
+                  method: 'DELETE',
+                });
+                router.replace('/');
+              }}
+            >
+              <Ionicons name="trash-outline" size={36} color={colors.text} />
+            </Pressable>
+          </View>
+        </>
+      )}
     </View>
   );
 }

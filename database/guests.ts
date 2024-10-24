@@ -1,6 +1,26 @@
 import { Guest } from '../migrations/00000-createTableGuests';
 import { sql } from './connect';
 
+export const createGuestInsecure = async (newGuest: Omit<Guest, 'id'>) => {
+  const [guest] = await sql<Guest[]>`
+    INSERT INTO
+      guests (
+        first_name,
+        last_name,
+        attending
+      )
+    VALUES
+      (
+        ${newGuest.firstName},
+        ${newGuest.lastName},
+        ${newGuest.attending}
+      )
+    RETURNING
+      guests.*
+  `;
+  return guest;
+};
+
 export const getGuestsInsecure = async () => {
   const guests = await sql<Guest[]>`
     SELECT
@@ -23,20 +43,15 @@ export const getGuestInsecure = async (id: number) => {
   return guest;
 };
 
-export const createGuestInsecure = async (newGuest: Omit<Guest, 'id'>) => {
+export const updateGuestInsecure = async (updatedGuest: Guest) => {
   const [guest] = await sql<Guest[]>`
-    INSERT INTO
-      guests (
-        first_name,
-        last_name,
-        attending
-      )
-    VALUES
-      (
-        ${newGuest.firstName},
-        ${newGuest.lastName},
-        ${newGuest.attending}
-      )
+    UPDATE guests
+    SET
+      first_name = ${updatedGuest.firstName},
+      last_name = ${updatedGuest.lastName},
+      attending = ${updatedGuest.attending}
+    WHERE
+      id = ${updatedGuest.id}
     RETURNING
       guests.*
   `;
