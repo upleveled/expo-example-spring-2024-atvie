@@ -4,7 +4,6 @@ import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import GuestItem from '../components/GuestItem';
-import UserItem from '../components/UserItem';
 import { colors } from '../constants/colors';
 import { Guest } from '../migrations/00000-createTableGuests';
 
@@ -45,7 +44,7 @@ export default function App() {
 
   useEffect(() => {
     async function getGuests() {
-      const response = await fetch('/guests', {
+      const response = await fetch('/api/guests', {
         headers: {
           Cookie: 'name=value',
         },
