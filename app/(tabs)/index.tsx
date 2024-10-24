@@ -1,11 +1,9 @@
-import { Pacifico_400Regular, useFonts } from '@expo-google-fonts/pacifico';
-import { Link } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
+import { Poppins_400Regular, useFonts } from '@expo-google-fonts/poppins';
 import { useEffect, useState } from 'react';
-import { FlatList, StyleSheet, View } from 'react-native';
-import GuestItem from '../components/GuestItem';
-import { colors } from '../constants/colors';
-import { Guest } from '../migrations/00000-createTableGuests';
+import { FlatList, SafeAreaView, StyleSheet } from 'react-native';
+import GuestItem from '../../components/GuestItem';
+import { colors } from '../../constants/colors';
+import { Guest } from '../../migrations/00000-createTableGuests';
 
 const styles = StyleSheet.create({
   container: {
@@ -17,18 +15,6 @@ const styles = StyleSheet.create({
   },
   list: {
     marginTop: 30,
-    paddingLeft: 30,
-    paddingRight: 30,
-    width: '100%',
-  },
-  button: {
-    marginTop: 30,
-    paddingTop: 10,
-    paddingBottom: 10,
-    width: '100%',
-    textAlign: 'center',
-    backgroundColor: colors.cardBackground,
-    fontSize: 24,
   },
 });
 
@@ -39,7 +25,7 @@ const renderItem = (item: { item: Guest }) => <GuestItem guest={item.item} />;
 export default function App() {
   const [guests, setGuests] = useState<Guest[]>([]);
   const [fontsLoaded] = useFonts({
-    Pacifico_400Regular,
+    Poppins_400Regular,
   });
 
   useEffect(() => {
@@ -63,18 +49,14 @@ export default function App() {
     return null;
   } else {
     return (
-      <View style={styles.container}>
-        <StatusBar style="auto" />
+      <SafeAreaView style={styles.container}>
         <FlatList
           style={styles.list}
           data={guests}
           renderItem={renderItem}
           keyExtractor={(item: Guest) => String(item.id)}
         />
-        <Link style={styles.button} href="/guests/new">
-          Add Guest
-        </Link>
-      </View>
+      </SafeAreaView>
     );
   }
 }

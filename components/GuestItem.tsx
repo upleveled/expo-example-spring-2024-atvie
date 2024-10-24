@@ -1,35 +1,58 @@
+import { Ionicons } from '@expo/vector-icons';
+import { Image } from 'expo-image';
 import { router } from 'expo-router';
-import { StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native';
 import { colors } from '../constants/colors';
 import { Guest } from '../migrations/00000-createTableGuests';
 
 const styles = StyleSheet.create({
-  right: {
-    textAlign: 'right',
-    fontSize: 10,
-  },
-  center: {
-    textAlign: 'center',
+  container: {
+    flex: 1,
+    backgroundColor: colors.background,
   },
   card: {
     backgroundColor: colors.cardBackground,
-    paddingTop: 10,
-    paddingLeft: 30,
-    paddingRight: 30,
-    paddingBottom: 10,
-    display: 'flex',
-    flexDirection: 'column',
+    borderRadius: 12,
+    shadowColor: colors.shadow,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    padding: 16,
+    marginBottom: 16,
+    flexDirection: 'row',
+    alignItems: 'center',
     justifyContent: 'space-between',
-    borderRadius: 30,
-    marginBottom: 30,
-    borderColor: colors.cardShadow,
-    borderWidth: 0.5,
-    borderTopWidth: 0,
-    borderLeftWidth: 0,
-    borderBottomRightRadius: 30,
-    borderBottomLeftRadius: 30,
-    borderTopRightRadius: 30,
-    textAlign: 'left',
+  },
+  avatar: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    overflow: 'hidden',
+  },
+  avatarImage: {
+    width: '100%',
+    height: '100%',
+  },
+  info: {
+    flex: 1,
+    marginLeft: 16,
+  },
+  name: {
+    fontFamily: 'Poppins_700Bold',
+    fontSize: 18,
+    color: colors.text,
+  },
+  attending: {
+    fontFamily: 'Poppins_400Regular',
+    fontSize: 14,
+    color: colors.textSecondary,
+  },
+  actionWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  button: {
+    marginLeft: 16,
   },
 });
 
@@ -48,11 +71,42 @@ export default function GuestItem({ guest }: Props) {
   };
 
   return (
-    <TouchableOpacity style={styles.card} onPress={openGuest}>
-      <Text style={styles.center}>
-        {firstName} {lastName}
-      </Text>
-      <Text style={styles.right}>{attending ? 'Coming!' : 'Not coming.'}</Text>
+    <TouchableOpacity style={styles.container} onPress={openGuest}>
+      <View style={styles.card}>
+        <View style={styles.avatar}>
+          <Image
+            style={styles.avatarImage}
+            source={{
+              uri: `https://res.cloudinary.com/trueque-image/image/upload/v1713269496/guest-${id}.webp`,
+            }}
+            placeholder={require('../assets/candidate-default.avif')}
+            placeholderContentFit="cover"
+          />
+        </View>
+        <View style={styles.info}>
+          <Text style={styles.name} numberOfLines={1} ellipsizeMode="tail">
+            {firstName} {lastName}
+          </Text>
+          <Text style={styles.attending}>
+            {attending ? 'Attending' : 'Not Attending'}
+          </Text>
+        </View>
+        <View style={styles.actionWrapper}>
+          <Switch
+            value={attending}
+            onValueChange={() => {}}
+            trackColor={{ false: colors.textSecondary, true: colors.switch }}
+            thumbColor={colors.text}
+          />
+          <TouchableOpacity style={styles.button}>
+            <Ionicons
+              name="trash-outline"
+              size={24}
+              color={colors.textSecondary}
+            />
+          </TouchableOpacity>
+        </View>
+      </View>
     </TouchableOpacity>
   );
 }
