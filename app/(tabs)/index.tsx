@@ -18,6 +18,8 @@ const styles = StyleSheet.create({
   },
 });
 
+// const renderItem = (item: { item: Guest }) => <UserItem user={item.item} />;
+
 const renderItem = (item: { item: Guest }) => <GuestItem guest={item.item} />;
 
 export default function App() {
