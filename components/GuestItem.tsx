@@ -17,7 +17,6 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 4,
-    elevation: 4,
     padding: 16,
     marginBottom: 16,
     flexDirection: 'row',
@@ -28,9 +27,6 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     borderRadius: 25,
-    borderWidth: 1,
-    borderColor: colors.textSecondary,
-    marginRight: 8,
     overflow: 'hidden',
   },
   avatarImage: {
@@ -47,14 +43,13 @@ const styles = StyleSheet.create({
     color: colors.text,
   },
   attending: {
-    fontFamily: 'Poppins_700Bold',
+    fontFamily: 'Poppins_400Regular',
     fontSize: 14,
     color: colors.textSecondary,
   },
-  actionContainer: {
+  actionWrapper: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginLeft: 16,
   },
   button: {
     marginLeft: 16,
@@ -96,7 +91,7 @@ export default function GuestItem({ guest }: Props) {
             {attending ? 'Attending' : 'Not Attending'}
           </Text>
         </View>
-        <View style={styles.actionContainer}>
+        <View style={styles.actionWrapper}>
           <Switch
             value={attending}
             onValueChange={() => {}}
