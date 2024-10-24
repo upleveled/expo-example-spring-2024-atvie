@@ -133,7 +133,7 @@ export default function Guests() {
               },
             ]}
             onPress={async () => {
-              await fetch(`/${guestId}`, {
+              await fetch(`/api/${guestId}`, {
                 method: 'PUT',
                 body: JSON.stringify({
                   firstName,
@@ -182,7 +182,7 @@ export default function Guests() {
               },
             ]}
             onPress={async () => {
-              await fetch(`/${guestId}`, {
+              await fetch(`/api/${guestId}`, {
                 method: 'DELETE',
               });
               router.push('/');
