@@ -63,20 +63,25 @@ const styles = StyleSheet.create({
     color: colors.text,
     fontSize: 18,
   },
+  label: {
+    fontSize: 18,
+    fontFamily: 'Poppins_400Regular',
+    color: colors.text,
+    marginBottom: 8,
+  },
   input: {
-    marginTop: 30,
-    paddingLeft: 30,
-    paddingRight: 30,
-    width: '100%',
+    color: colors.text,
+    backgroundColor: colors.background,
+    borderColor: colors.textSecondary,
+    borderWidth: 1,
+    borderRadius: 8,
+    padding: 8,
+    marginBottom: 16,
+    fontSize: 16,
+    fontFamily: 'Poppins_400Regular',
   },
-  edit: {
-    textAlign: 'right',
-  },
-  flex: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-around',
-    width: '100%',
+  inputFocused: {
+    borderColor: colors.white,
   },
 });
 
@@ -87,6 +92,7 @@ export default function GuestPage() {
   const [firstName, setFirstName] = useState<string>('');
   const [lastName, setLastName] = useState<string>('');
   const [attending, setAttending] = useState<boolean>(false);
+  const [focusedInput, setFocusedInput] = useState<string | undefined>();
 
   // Dynamic import of images
   // const imageContext = require.context('../../assets', false, /\.(avif)$/);
@@ -136,20 +142,29 @@ export default function GuestPage() {
         />
       </View>
       {edit ? (
-        <View style={styles.flex}>
+        <View>
+          <Text style={styles.label}>First Name</Text>
           <TextInput
-            style={styles.input}
+            style={[
+              styles.input,
+              focusedInput === 'firstName' && styles.inputFocused,
+            ]}
             value={firstName}
             onChangeText={setFirstName}
-            placeholder="First Name"
+            onFocus={() => setFocusedInput('firstName')}
+            onBlur={() => setFocusedInput(undefined)}
           />
+          <Text style={styles.label}>Last Name</Text>
           <TextInput
-            style={styles.input}
+            style={[
+              styles.input,
+              focusedInput === 'lastName' && styles.inputFocused,
+            ]}
             value={lastName}
             onChangeText={setLastName}
-            placeholder="Last Name"
+            onFocus={() => setFocusedInput('lastName')}
+            onBlur={() => setFocusedInput(undefined)}
           />
-          <Switch value={attending} onValueChange={setAttending} />
           <Pressable
             style={styles.button}
             onPress={async () => {
@@ -177,7 +192,22 @@ export default function GuestPage() {
             <Text style={styles.textSecondary}>
               {attending ? 'Attending' : 'Not attending'}
             </Text>
-            <Switch value={attending} onValueChange={() => {}} />
+            <Switch
+              value={attending}
+              onValueChange={async () => {
+                const response = await fetch(`/api/${guestId}`, {
+                  method: 'PUT',
+                  body: JSON.stringify({
+                    firstName: firstName,
+                    lastName: lastName,
+                    attending: !attending,
+                  }),
+                });
+                setEdit(false);
+                const data = await response.json();
+                setAttending(data.guest.attending);
+              }}
+            />
           </View>
           <View style={styles.buttonRow}>
             <Pressable
