@@ -109,10 +109,10 @@ const styles = StyleSheet.create({
 export default function GuestPage() {
   const { guestId } = useLocalSearchParams();
 
-  const [edit, setEdit] = useState<boolean>(false);
-  const [firstName, setFirstName] = useState<string>('');
-  const [lastName, setLastName] = useState<string>('');
-  const [attending, setAttending] = useState<boolean>(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [attending, setAttending] = useState(false);
   const [focusedInput, setFocusedInput] = useState<string | undefined>();
 
   // Dynamic import of images
@@ -161,7 +161,7 @@ export default function GuestPage() {
           placeholderContentFit="cover"
         />
       </View>
-      {edit ? (
+      {isEditing ? (
         <>
           <View style={styles.inputContainer}>
             <Text style={styles.label}>First Name</Text>
@@ -202,7 +202,7 @@ export default function GuestPage() {
                 }),
               });
 
-              setEdit(false);
+              setIsEditing(false);
               router.replace('/');
             }}
           >
@@ -230,7 +230,7 @@ export default function GuestPage() {
                     attending: !attending,
                   }),
                 });
-                setEdit(false);
+                setIsEditing(false);
                 router.replace('/');
               }}
             />
@@ -239,7 +239,7 @@ export default function GuestPage() {
             <Pressable
               style={styles.icon}
               onPress={() => {
-                setEdit(true);
+                setIsEditing(true);
               }}
             >
               <Ionicons name="create-outline" size={36} color={colors.text} />
@@ -250,7 +250,7 @@ export default function GuestPage() {
                 await fetch(`/api/${guestId}`, {
                   method: 'DELETE',
                 });
-                setEdit(false);
+                setIsEditing(false);
                 router.replace('/');
               }}
             >

@@ -58,11 +58,11 @@ export const updateGuestInsecure = async (updatedGuest: Guest) => {
   return guest;
 };
 
-export const deleteGuestInsecure = async (id: number) => {
+export const deleteGuestInsecure = async (guestId: Guest['id']) => {
   const [guest] = await sql<Guest[]>`
     DELETE FROM guests
     WHERE
-      id = ${id}
+      id = ${guestId}
     RETURNING
       guests.*
   `;
