@@ -1,4 +1,4 @@
-import postgres, { Sql } from 'postgres';
+import postgres, { type Sql } from 'postgres';
 import { postgresConfig, setEnvironmentVariables } from '../util/config';
 
 setEnvironmentVariables();

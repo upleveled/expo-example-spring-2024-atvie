@@ -1,9 +1,11 @@
 import { Poppins_400Regular, useFonts } from '@expo-google-fonts/poppins';
-import { useEffect, useState } from 'react';
+import { useFocusEffect } from 'expo-router';
+import { useCallback, useState } from 'react';
 import { FlatList, SafeAreaView, StyleSheet } from 'react-native';
 import GuestItem from '../../components/GuestItem';
 import { colors } from '../../constants/colors';
-import { Guest } from '../../migrations/00000-createTableGuests';
+import type { Guest } from '../../migrations/00000-createTableGuests';
+import type { GuestsResponseBodyGet } from '../api/guests+api';
 
 const styles = StyleSheet.create({
   container: {
@@ -18,45 +20,53 @@ const styles = StyleSheet.create({
   },
 });
 
-// const renderItem = (item: { item: Guest }) => <UserItem user={item.item} />;
-
-const renderItem = (item: { item: Guest }) => <GuestItem guest={item.item} />;
-
 export default function App() {
   const [guests, setGuests] = useState<Guest[]>([]);
   const [fontsLoaded] = useFonts({
     Poppins_400Regular,
   });
+  const [isStale, setIsStale] = useState(true);
 
-  useEffect(() => {
-    async function getGuests() {
-      const response = await fetch('/api/guests', {
-        headers: {
-          Cookie: 'name=value',
-        },
+  // const renderItem = (item: { item: Guest }) => <UserItem user={item.item} />;
+
+  const renderItem = (item: { item: Guest }) => (
+    <GuestItem guest={item.item} setIsStale={setIsStale} />
+  );
+
+  useFocusEffect(
+    useCallback(() => {
+      if (!isStale) return;
+
+      async function getGuests() {
+        const response = await fetch('/api/guests', {
+          headers: {
+            Cookie: 'name=value',
+          },
+        });
+        const body: GuestsResponseBodyGet = await response.json();
+
+        setGuests(body.guests);
+        setIsStale(false);
+      }
+
+      getGuests().catch((error) => {
+        console.error(error);
       });
-      const data = await response.json();
-
-      setGuests(data.guests);
-    }
-
-    getGuests().catch((error) => {
-      console.error(error);
-    });
-  }, []);
+    }, [isStale]),
+  );
 
   if (!fontsLoaded) {
     return null;
-  } else {
-    return (
-      <SafeAreaView style={styles.container}>
-        <FlatList
-          style={styles.list}
-          data={guests}
-          renderItem={renderItem}
-          keyExtractor={(item: Guest) => String(item.id)}
-        />
-      </SafeAreaView>
-    );
   }
+
+  return (
+    <SafeAreaView style={styles.container}>
+      <FlatList
+        style={styles.list}
+        data={guests}
+        renderItem={renderItem}
+        keyExtractor={(item: Guest) => String(item.id)}
+      />
+    </SafeAreaView>
+  );
 }
